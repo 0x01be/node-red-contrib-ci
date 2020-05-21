@@ -1,0 +1,8 @@
+.config.json
+.config.json.backup
+.flows.json.backup
+flows_cred.json
+node_modules
+.DS_Store
+nodes/.DS_Store
+static/.DS_Store

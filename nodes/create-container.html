@@ -1,0 +1,92 @@
+<script type="text/javascript">
+    RED.nodes.registerType('create-container', {
+        category: 'function',
+        color: '#ffaaaa',
+        defaults: {
+            name: {
+                value: undefined,
+                required: false
+            },
+            image: {
+                value: undefined,
+                required: false
+            },
+            pull: {
+                value: false,
+                required: true
+            },
+            protocol: {
+                value: 'https',
+                required: true,
+                validate: (value) => {
+                    return (value === 'http') || (value === 'https')
+                }
+            },
+            hostname: {
+                value: undefined,
+                required: true
+            },
+            port: {
+                value: undefined,
+                required: true,
+                validate: RED.validators.number()
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'arrow-in.png', // TODO: Docker icon
+        label: function () {
+            return (this.name && this.name !== '') ? this.name : (this.image ? this.image : 'create');
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="create-container">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Create">
+    </div>
+    <hr>
+    <section>
+        <h3>Server</h3>
+        <div class="form-row">
+            <label for="node-input-protocol"><i class="icon-tag"></i> Protocol</label>
+            <select name="node-input-protocol" id="node-input-protocol">
+                <option value="https">HTTPS</option>
+                <option value="http">HTTP (Unsafe)</option>
+              </select>
+        </div>
+        <div class="form-row">
+            <label for="node-input-hostname"><i class="icon-tag"></i> Hostname</label>
+            <input type="text" id="node-input-hostname" placeholder="host.docker.internal">
+        </div>
+        <div class="form-row">
+            <label for="node-input-port"><i class="icon-tag"></i> Port</label>
+            <input type="number" id="node-input-port" placeholder="1234">
+        </div>
+    </section>
+</script>
+
+<script type="text/html" data-help-name="create-container">
+    <p>Create a docker container from an image</p>
+    <h3>Input: image</h3>
+        <dl class="message-properties">
+        <dt>payload
+            <span class="property-type"> object</span>
+<code><pre>{
+    Id: 'string'
+}</pre></code>
+        </dt>
+    <h3>Output: container or message</h3>
+        <dl class="message-properties">
+        <dt>payload
+            <span class="property-type"> object</span>
+<code><pre>{
+    Id: 'string'
+}</pre></code>
+        or
+<code><pre>{
+    message: 'string'
+}</pre></code>
+        </dt>        
+</script>

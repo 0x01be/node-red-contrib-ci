@@ -1,0 +1,17 @@
+{
+  "name": "node-red-ci",
+  "version": "0.0.1",
+  "description": "Continuous Integration with Node RED",
+  "keywords": [
+    "node-red-ci"
+  ],
+  "node-red": {
+    "nodes": {
+      "build-image": "nodes/build-image.js",
+      "create-container": "nodes/create-container.js",
+      "start-container": "nodes/start-container.js",
+      "inspect-container": "nodes/inspect-container.js",
+      "read-logs": "nodes/read-logs.js"
+    }
+  }
+}

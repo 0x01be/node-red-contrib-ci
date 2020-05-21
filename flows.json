@@ -1,0 +1,434 @@
+[
+    {
+        "id": "5aabf089.3ea8d",
+        "type": "tab",
+        "label": "Sample",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "17c8105a.296008",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "aea162e7.b7cec",
+        "type": "ui_tab",
+        "z": "",
+        "name": "CI",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": true
+    },
+    {
+        "id": "3ed7103d.ce2a7",
+        "type": "ui_group",
+        "z": "",
+        "name": "Output",
+        "tab": "aea162e7.b7cec",
+        "order": 1,
+        "disp": false,
+        "width": "18",
+        "collapse": false
+    },
+    {
+        "id": "6cb054d5.47183c",
+        "type": "inject",
+        "z": "5aabf089.3ea8d",
+        "name": "remote",
+        "topic": "",
+        "payload": "{}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 110,
+        "y": 220,
+        "wires": [
+            [
+                "248fedb9.b47f1a",
+                "4253048d.179f34"
+            ]
+        ]
+    },
+    {
+        "id": "496d20f6.5fa9",
+        "type": "debug",
+        "z": "5aabf089.3ea8d",
+        "name": "stream",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload.stream",
+        "targetType": "msg",
+        "x": 510,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "f4f23fd8.98663",
+        "type": "debug",
+        "z": "5aabf089.3ea8d",
+        "name": "image",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload.Id",
+        "targetType": "msg",
+        "x": 510,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "248fedb9.b47f1a",
+        "type": "ui_template",
+        "z": "5aabf089.3ea8d",
+        "group": "3ed7103d.ce2a7",
+        "name": "Build log",
+        "order": 2,
+        "width": "18",
+        "height": "5",
+        "format": "<pre ng-bind-html=\"msg.payload.log\"></pre>",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "x": 520,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4253048d.179f34",
+        "type": "ui_button",
+        "z": "5aabf089.3ea8d",
+        "name": "Button",
+        "group": "3ed7103d.ce2a7",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "label": "Build and run",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "{\"remote\":\"http://localhost:1880/Dockerfile\",\"log\":\"\"}",
+        "payloadType": "json",
+        "topic": "",
+        "x": 110,
+        "y": 60,
+        "wires": [
+            [
+                "248fedb9.b47f1a",
+                "190d4eb1.a0ea49",
+                "de772a1d.18a57"
+            ]
+        ]
+    },
+    {
+        "id": "3bd1809b.8f6708",
+        "type": "debug",
+        "z": "5aabf089.3ea8d",
+        "name": "container",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload.Id",
+        "targetType": "msg",
+        "x": 520,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "190d4eb1.a0ea49",
+        "type": "build-image",
+        "z": "5aabf089.3ea8d",
+        "name": "build",
+        "remote": "",
+        "nocache": false,
+        "pull": false,
+        "protocol": "http",
+        "hostname": "host.docker.internal",
+        "port": "1234",
+        "x": 290,
+        "y": 220,
+        "wires": [
+            [
+                "f4f23fd8.98663",
+                "d8025478.3647"
+            ],
+            [
+                "496d20f6.5fa9",
+                "248fedb9.b47f1a"
+            ]
+        ]
+    },
+    {
+        "id": "d8025478.3647",
+        "type": "create-container",
+        "z": "5aabf089.3ea8d",
+        "name": "create",
+        "image": "",
+        "pull": false,
+        "protocol": "http",
+        "hostname": "host.docker.internal",
+        "port": "1234",
+        "x": 290,
+        "y": 320,
+        "wires": [
+            [
+                "3bd1809b.8f6708",
+                "e9a2cea.9387eb",
+                "127cab78.d3529d"
+            ]
+        ]
+    },
+    {
+        "id": "e9a2cea.9387eb",
+        "type": "start-container",
+        "z": "5aabf089.3ea8d",
+        "name": "start",
+        "protocol": "http",
+        "hostname": "host.docker.internal",
+        "port": "1234",
+        "x": 290,
+        "y": 380,
+        "wires": [
+            [
+                "19d0523b.a57c3e",
+                "2be013cb.8e7f6c",
+                "3be22757.61c6b",
+                "127cab78.d3529d"
+            ]
+        ]
+    },
+    {
+        "id": "2be013cb.8e7f6c",
+        "type": "read-logs",
+        "z": "5aabf089.3ea8d",
+        "name": "logs",
+        "follow": true,
+        "stderr": true,
+        "protocol": "http",
+        "hostname": "host.docker.internal",
+        "port": "1234",
+        "x": 290,
+        "y": 540,
+        "wires": [
+            [
+                "8d91446f.3aa4b",
+                "de772a1d.18a57"
+            ]
+        ]
+    },
+    {
+        "id": "19d0523b.a57c3e",
+        "type": "debug",
+        "z": "5aabf089.3ea8d",
+        "name": "container",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload.Id",
+        "targetType": "msg",
+        "x": 520,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "8d91446f.3aa4b",
+        "type": "debug",
+        "z": "5aabf089.3ea8d",
+        "name": "stream",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload.stream",
+        "targetType": "msg",
+        "x": 510,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "3be22757.61c6b",
+        "type": "stop-container",
+        "z": "5aabf089.3ea8d",
+        "name": "stop",
+        "protocol": "http",
+        "hostname": "host.docker.internal",
+        "port": "1234",
+        "x": 290,
+        "y": 440,
+        "wires": [
+            [
+                "ac5659c5.f00ac8",
+                "127cab78.d3529d"
+            ]
+        ]
+    },
+    {
+        "id": "ac5659c5.f00ac8",
+        "type": "debug",
+        "z": "5aabf089.3ea8d",
+        "name": "container",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload.Id",
+        "targetType": "msg",
+        "x": 520,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "127cab78.d3529d",
+        "type": "inspect-container",
+        "z": "5aabf089.3ea8d",
+        "name": "inspect",
+        "protocol": "http",
+        "hostname": "host.docker.internal",
+        "port": "1234",
+        "x": 280,
+        "y": 700,
+        "wires": [
+            [
+                "72ba4632.5fd4e8"
+            ]
+        ]
+    },
+    {
+        "id": "72ba4632.5fd4e8",
+        "type": "debug",
+        "z": "5aabf089.3ea8d",
+        "name": "status",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload.State.Status",
+        "targetType": "msg",
+        "x": 510,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "de772a1d.18a57",
+        "type": "ui_template",
+        "z": "5aabf089.3ea8d",
+        "group": "3ed7103d.ce2a7",
+        "name": "Run log",
+        "order": 3,
+        "width": "18",
+        "height": "9",
+        "format": "<pre ng-bind-html=\"msg.payload.log\"></pre>",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "x": 520,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    }
+]
