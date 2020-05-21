@@ -22,13 +22,15 @@
                 "default": "#097479",
                 "baseColor": "#097479",
                 "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
-                "edited": false
+                "edited": true,
+                "reset": false
             },
             "customTheme": {
                 "name": "Untitled Theme 1",
                 "default": "#4B7930",
                 "baseColor": "#4B7930",
-                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "reset": false
             },
             "themeState": {
                 "base-color": {
@@ -85,9 +87,9 @@
         },
         "site": {
             "name": "Node-RED Dashboard",
-            "hideToolbar": "false",
+            "hideToolbar": "true",
             "allowSwipe": "false",
-            "lockMenu": "false",
+            "lockMenu": "true",
             "allowTempTheme": "true",
             "dateFormat": "DD/MM/YYYY",
             "sizes": {
@@ -117,61 +119,21 @@
         "z": "",
         "name": "Output",
         "tab": "aea162e7.b7cec",
-        "order": 1,
+        "order": 2,
         "disp": false,
         "width": "18",
         "collapse": false
     },
     {
-        "id": "6cb054d5.47183c",
-        "type": "inject",
-        "z": "5aabf089.3ea8d",
-        "name": "remote",
-        "topic": "",
-        "payload": "{}",
-        "payloadType": "json",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "x": 110,
-        "y": 220,
-        "wires": [
-            [
-                "248fedb9.b47f1a",
-                "4253048d.179f34"
-            ]
-        ]
-    },
-    {
-        "id": "496d20f6.5fa9",
-        "type": "debug",
-        "z": "5aabf089.3ea8d",
-        "name": "stream",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload.stream",
-        "targetType": "msg",
-        "x": 510,
-        "y": 240,
-        "wires": []
-    },
-    {
-        "id": "f4f23fd8.98663",
-        "type": "debug",
-        "z": "5aabf089.3ea8d",
-        "name": "image",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload.Id",
-        "targetType": "msg",
-        "x": 510,
-        "y": 180,
-        "wires": []
+        "id": "805f2c66.ba6e88",
+        "type": "ui_group",
+        "z": "",
+        "name": "Summary",
+        "tab": "aea162e7.b7cec",
+        "order": 1,
+        "disp": false,
+        "width": "18",
+        "collapse": false
     },
     {
         "id": "248fedb9.b47f1a",
@@ -188,7 +150,7 @@
         "resendOnRefresh": false,
         "templateScope": "local",
         "x": 520,
-        "y": 60,
+        "y": 80,
         "wires": [
             []
         ]
@@ -208,39 +170,26 @@
         "color": "",
         "bgcolor": "",
         "icon": "",
-        "payload": "{\"remote\":\"http://localhost:1880/Dockerfile\",\"log\":\"\"}",
+        "payload": "{\"remote\":\"http://localhost:1880/Dockerfile\",\"log\":\"\",\"Id\":\"\"}",
         "payloadType": "json",
         "topic": "",
         "x": 110,
-        "y": 60,
+        "y": 80,
         "wires": [
             [
-                "248fedb9.b47f1a",
                 "190d4eb1.a0ea49",
-                "de772a1d.18a57"
+                "e63cdc7f.caf3b8",
+                "248fedb9.b47f1a",
+                "de772a1d.18a57",
+                "219d36bc.a2f04a"
             ]
         ]
-    },
-    {
-        "id": "3bd1809b.8f6708",
-        "type": "debug",
-        "z": "5aabf089.3ea8d",
-        "name": "container",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload.Id",
-        "targetType": "msg",
-        "x": 520,
-        "y": 320,
-        "wires": []
     },
     {
         "id": "190d4eb1.a0ea49",
         "type": "build-image",
         "z": "5aabf089.3ea8d",
-        "name": "build",
+        "name": "",
         "remote": "",
         "nocache": false,
         "pull": false,
@@ -248,15 +197,14 @@
         "hostname": "host.docker.internal",
         "port": "1234",
         "x": 290,
-        "y": 220,
+        "y": 180,
         "wires": [
             [
-                "f4f23fd8.98663",
                 "d8025478.3647"
             ],
             [
-                "496d20f6.5fa9",
-                "248fedb9.b47f1a"
+                "248fedb9.b47f1a",
+                "7f5be35f.96f18c"
             ]
         ]
     },
@@ -264,18 +212,20 @@
         "id": "d8025478.3647",
         "type": "create-container",
         "z": "5aabf089.3ea8d",
-        "name": "create",
+        "name": "",
         "image": "",
         "pull": false,
         "protocol": "http",
         "hostname": "host.docker.internal",
         "port": "1234",
         "x": 290,
-        "y": 320,
+        "y": 280,
         "wires": [
             [
-                "3bd1809b.8f6708",
                 "e9a2cea.9387eb",
+                "219d36bc.a2f04a",
+                "dd58c3bb.810fb",
+                "e63cdc7f.caf3b8",
                 "127cab78.d3529d"
             ]
         ]
@@ -284,15 +234,14 @@
         "id": "e9a2cea.9387eb",
         "type": "start-container",
         "z": "5aabf089.3ea8d",
-        "name": "start",
+        "name": "",
         "protocol": "http",
         "hostname": "host.docker.internal",
         "port": "1234",
         "x": 290,
-        "y": 380,
+        "y": 340,
         "wires": [
             [
-                "19d0523b.a57c3e",
                 "2be013cb.8e7f6c",
                 "3be22757.61c6b",
                 "127cab78.d3529d"
@@ -303,113 +252,54 @@
         "id": "2be013cb.8e7f6c",
         "type": "read-logs",
         "z": "5aabf089.3ea8d",
-        "name": "logs",
+        "name": "",
         "follow": true,
         "stderr": true,
         "protocol": "http",
         "hostname": "host.docker.internal",
         "port": "1234",
-        "x": 290,
-        "y": 580,
+        "x": 510,
+        "y": 220,
         "wires": [
             [
-                "8d91446f.3aa4b",
-                "de772a1d.18a57"
+                "de772a1d.18a57",
+                "7f5be35f.96f18c"
             ]
         ]
-    },
-    {
-        "id": "19d0523b.a57c3e",
-        "type": "debug",
-        "z": "5aabf089.3ea8d",
-        "name": "container",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload.Id",
-        "targetType": "msg",
-        "x": 520,
-        "y": 380,
-        "wires": []
-    },
-    {
-        "id": "8d91446f.3aa4b",
-        "type": "debug",
-        "z": "5aabf089.3ea8d",
-        "name": "stream",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload.stream",
-        "targetType": "msg",
-        "x": 510,
-        "y": 580,
-        "wires": []
     },
     {
         "id": "3be22757.61c6b",
         "type": "stop-container",
         "z": "5aabf089.3ea8d",
-        "name": "stop",
+        "name": "",
         "protocol": "http",
         "hostname": "host.docker.internal",
         "port": "1234",
         "x": 290,
-        "y": 440,
+        "y": 400,
         "wires": [
             [
-                "ac5659c5.f00ac8",
                 "127cab78.d3529d"
             ]
         ]
     },
     {
-        "id": "ac5659c5.f00ac8",
-        "type": "debug",
-        "z": "5aabf089.3ea8d",
-        "name": "container",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload.Id",
-        "targetType": "msg",
-        "x": 520,
-        "y": 440,
-        "wires": []
-    },
-    {
         "id": "127cab78.d3529d",
         "type": "inspect-container",
         "z": "5aabf089.3ea8d",
-        "name": "inspect",
+        "name": "",
         "protocol": "http",
         "hostname": "host.docker.internal",
         "port": "1234",
         "x": 280,
-        "y": 500,
+        "y": 460,
         "wires": [
             [
-                "72ba4632.5fd4e8"
+                "e63cdc7f.caf3b8",
+                "9325fcec.531848",
+                "7c355c21.77d524"
             ]
         ]
-    },
-    {
-        "id": "72ba4632.5fd4e8",
-        "type": "debug",
-        "z": "5aabf089.3ea8d",
-        "name": "status",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload.State.Status",
-        "targetType": "msg",
-        "x": 510,
-        "y": 500,
-        "wires": []
     },
     {
         "id": "de772a1d.18a57",
@@ -426,9 +316,131 @@
         "resendOnRefresh": false,
         "templateScope": "local",
         "x": 520,
-        "y": 660,
+        "y": 140,
         "wires": [
             []
         ]
+    },
+    {
+        "id": "e63cdc7f.caf3b8",
+        "type": "ui_text",
+        "z": "5aabf089.3ea8d",
+        "group": "805f2c66.ba6e88",
+        "order": 3,
+        "width": "3",
+        "height": "1",
+        "name": "",
+        "label": "Status:",
+        "format": "{{msg.payload.State.Status}}",
+        "layout": "row-left",
+        "x": 520,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "219d36bc.a2f04a",
+        "type": "ui_text",
+        "z": "5aabf089.3ea8d",
+        "group": "805f2c66.ba6e88",
+        "order": 2,
+        "width": "15",
+        "height": "1",
+        "name": "",
+        "label": "Container:",
+        "format": "{{msg.payload.Id}}",
+        "layout": "row-left",
+        "x": 510,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "9325fcec.531848",
+        "type": "debug",
+        "z": "5aabf089.3ea8d",
+        "name": "status",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload.State.Status",
+        "targetType": "msg",
+        "x": 510,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "7f5be35f.96f18c",
+        "type": "debug",
+        "z": "5aabf089.3ea8d",
+        "name": "stream",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload.stream",
+        "targetType": "msg",
+        "x": 510,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "dd58c3bb.810fb",
+        "type": "debug",
+        "z": "5aabf089.3ea8d",
+        "name": "container",
+        "active": true,
+        "tosidebar": false,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload.Id",
+        "targetType": "msg",
+        "x": 520,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "227c1836.063658",
+        "type": "inject",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 100,
+        "y": 180,
+        "wires": [
+            [
+                "4253048d.179f34"
+            ]
+        ]
+    },
+    {
+        "id": "26d0769c.0ad7ca",
+        "type": "comment",
+        "z": "5aabf089.3ea8d",
+        "name": "Dashboard at /dashboard",
+        "info": "# Dashboard\n\n## UI\n\n[/dashboard](http://localhost:1880/dashboard/)\n\n## Remote\n\n[/Dockerfile](http://localhost:1880/Dockerfile)\n\n",
+        "x": 130,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "7c355c21.77d524",
+        "type": "debug",
+        "z": "5aabf089.3ea8d",
+        "name": "info",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 330,
+        "y": 580,
+        "wires": []
     }
 ]

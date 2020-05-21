@@ -1,7 +1,3 @@
-# node-red-ci
+# node-red-docker
 
-Continuous Integration with Node RED
-
-## Use
-
-`docker build . -t nodered && docker run --rm --name nodered -v $(pwd):/data -p 1880:1880 nodered`
+`docker build . -t node-red-docker && docker run --rm --name node-red-docker -v $(pwd):/data -p 1880:1880 node-red-docker`

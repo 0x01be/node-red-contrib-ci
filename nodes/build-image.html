@@ -9,7 +9,7 @@
             remote: {
                 value: undefined,
                 required: false,
-                validate: function (value) {
+                validate: (value) => {
                     let url;
 
                     try {
@@ -48,7 +48,7 @@
         inputs: 1,
         outputs: 2,
         icon: 'arrow-in.png',
-        label: function () {
+        label: () => {
             return (this.name && this.name !== '') ? this.name : 'build';
         }
     });
@@ -99,29 +99,26 @@
 <script type="text/html" data-help-name="build-image">
     <p>Build a docker image from a remote Dockerfile</p>
     <h3>Input: remote Dockerfile</h3>
-        <dl class="message-properties">
+    <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{
-    remote: 'string'
-}</pre></code>
+            <code><pre>{ remote: 'string' }</pre></code>
         </dt>
+    </dl>
     <h3>Output 1: image</h3>
-        <dl class="message-properties">
+    <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{
-    Id: 'string'
-}</pre></code>
+            <code><pre>{ Id: 'string' }</pre></code>
         </dt>
-    <h3>Output 2: stdout stream</h3>
-        <dl class="message-properties">
+    </dl>
+    <h3>Output 2: stdout stream and full log</h3>
+    <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{
-    stream: 'string'
-}</pre></code>
+            <code><pre>{ stream: 'string', log: 'string' }</pre></code>
         </dt>
+    </dl>
     <h3>Details</h3>
         <p>Currently only supports <code>remote</code> Dockerfile (no tar)</p>
 </script>

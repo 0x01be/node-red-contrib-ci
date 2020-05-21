@@ -1,16 +1,14 @@
 module.exports = (RED) => {
 
-  function buildPath(msg) {
-    const name = ((typeof msg.payload.name === 'string') && msg.payload.name !== '') ? msg.payload.name : '';
-
-    const query = require('querystring').stringify({
+  const buildPath = (msg) => {
+    const query = ((typeof msg.payload.name === 'string') && msg.payload.name !== '') ? require('querystring').stringify({
       name: name
-    });
+    }) : '';
 
     return `/containers/create?${query}`;
   }
 
-  function CreateContainerNode(config) {
+   function CreateContainerNode (config) {
     const node = this;
 
     RED.nodes.createNode(this, config);

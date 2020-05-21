@@ -35,7 +35,7 @@
         inputs: 1,
         outputs: 1,
         icon: 'arrow-in.png',
-        label: function () {
+        label: () => {
             return (this.name && (this.name !== '')) ? this.name : 'logs';
         }
     });
@@ -82,17 +82,17 @@
 <script type="text/html" data-help-name="read-logs">
     <p>Get a docker container's logs</p>
     <h3>Input: container</h3>
-        <dl class="message-properties">
+    <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-<code><pre>{
-    Id: 'string'
-}</pre></code>
+            <code><pre>{ Id: 'string' }</pre></code>
         </dt>
-    <h3>Output: result</h3>
-        <dl class="message-properties">
+    </dl>
+    <h3>Output: stream and full log</h3>
+    <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-<code><pre>{}</pre></code>
+            <code><pre>{ stream: 'string', log: 'string' }</pre></code>
         </dt>
+    </dl>
 </script>

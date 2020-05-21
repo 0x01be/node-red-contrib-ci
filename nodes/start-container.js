@@ -1,6 +1,6 @@
 module.exports = (RED) => {
 
-  function StartContainerNode(config) {
+  function StartContainerNode (config)  {
     const node = this;
 
     RED.nodes.createNode(this, config);

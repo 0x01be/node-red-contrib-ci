@@ -1,6 +1,6 @@
 module.exports = (RED) => {
 
-  function StopContainerNode(config) {
+  function StopConainerNode (config) {
     const node = this;
 
     RED.nodes.createNode(this, config);
@@ -43,5 +43,5 @@ module.exports = (RED) => {
     });
   }
 
-  RED.nodes.registerType('stop-container', StopContainerNode);
+  RED.nodes.registerType('stop-container', StopConainerNode);
 }

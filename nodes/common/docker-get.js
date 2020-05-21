@@ -6,16 +6,15 @@ module.exports = (name, buildPath, onData, onSuccess, onFailure) => {
 
   return (RED) => {
 
-    function Node(config) {
+    function DockerGetNode (config) {
       const node = this;
 
       RED.nodes.createNode(this, config);
 
       node.on('input', (msg) => {
-        const protocol = (config.protocol === 'http') ? 'http' : 'https';
         const path = buildPath(msg, config);
 
-        require(protocol).get({
+        require(config.protocol).get({
           hostname: config.hostname,
           port: config.port,
           path: path
@@ -28,17 +27,17 @@ module.exports = (name, buildPath, onData, onSuccess, onFailure) => {
 
           response.on('end', () => {
             if (isSuccessful(response)) {
-              if ((typeof onSuccess === "function")) {
-                onSuccess(node, onChunk.result);
+              if (typeof onSuccess === 'function') {
+                onSuccess(node, onChunk.accumulator);
               }
-            } else if (typeof onFailure === "function") {
-              onFailure(node, onChunk.result);
+            } else if (typeof onFailure === 'function') {
+              onFailure(node, onChunk.accumulator);
             }
           });
         });
       });
     }
 
-    RED.nodes.registerType(name, Node);
+    RED.nodes.registerType(name, DockerGetNode);
   };
 }

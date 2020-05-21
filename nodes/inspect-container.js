@@ -1,17 +1,20 @@
 const GET = require('./common/docker-get');
 
-const buildPath = (msg, config) => {
-  const id = ((typeof msg.payload.Id === 'string') && (msg.payload.Id !== '')) ? msg.payload.Id : config.container;
+const buildPath = (msg) => {
+  const id = msg.payload.Id;
+  const query = require('querystring').stringify({
+    size: true
+  });
 
-  return `/containers/${id}/json`;
+  return `/containers/${id}/json?${query}`;
 }
 
 const onData = () => {
   const result = (chunk) => {
-    return result.result += chunk;
+    return result.accumulator += chunk;
   };
 
-  result.result = "";
+  result.accumulator = "";
 
   return result;
 };

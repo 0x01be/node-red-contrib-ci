@@ -27,7 +27,7 @@
         inputs: 1,
         outputs: 1,
         icon: 'arrow-in.png',
-        label: function () {
+        label: () => {
             return (this.name && this.name !== '') ? this.name : 'stop';
         }
     });
@@ -62,21 +62,17 @@
 <script type="text/html" data-help-name="stop-container">
     <p>Stop a docker container</p>
     <h3>Input: container</h3>
-        <dl class="message-properties">
+    <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code>
-                <pre>{
-    Id: 'string'
-}</pre></code>
+            <code><pre>{ Id: 'string' }</pre></code>
         </dt>
+    </dl>
     <h3>Output: container</h3>
-        <dl class="message-properties">
+    <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code>
-                <pre>{
-Id: 'string'
-}</pre></code>
+            <code><pre>{ Id: 'string' }</pre></code>
         </dt>
+    </dl>
 </script>

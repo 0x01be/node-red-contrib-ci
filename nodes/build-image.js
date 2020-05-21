@@ -1,14 +1,13 @@
 module.exports = (RED) => {
 
-  function buildPath(msg, config) {
+  const buildPath = (msg, config) => {
     const remote = ((typeof msg.payload.remote === 'string') && msg.payload.remote !== '') ? msg.payload.remote : config.remote;
-    const tag = ((typeof msg.payload.tag === 'string') && msg.payload.tag !== '') ? msg.payload.tag : config.tag;
     const nocache = ((typeof msg.payload.nocache === 'string') && msg.payload.nocache !== '') ? msg.payload.nocache : config.nocache;
     const pull = ((typeof msg.payload.pull === 'string') && msg.payload.pull !== '') ? msg.payload.pull : config.pull;
 
     const query = require('querystring').stringify({
       remote: remote,
-      t: tag,
+      dockerfile: undefined,
       q: false,
       rm: true,
       forcerm: true,
@@ -19,14 +18,14 @@ module.exports = (RED) => {
     return `/build?${query}`;
   }
 
-  function isSuccessful(response, image) {
+  const isSuccessful = (response, image) => {
     const result = response.complete && (response.statusCode === 200) 
                 && image && (typeof image.Id === 'string') && (image.Id !== '');
                 
     return result;
   }
 
-  function BuildImageNode(config) {
+  function BuildImageNode (config) {
     const node = this;
 
     RED.nodes.createNode(this, config);

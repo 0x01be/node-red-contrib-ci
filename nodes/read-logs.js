@@ -1,8 +1,7 @@
 const GET = require('./common/docker-get');
 
 const buildPath = (msg, config) => {
-  const id = ((typeof msg.payload.Id === 'string') && (msg.payload.Id !== '')) ? msg.payload.Id : '';
-
+  const id = msg.payload.Id;
   const query = require('querystring').stringify({
     stdout: true,
     stderr: config.stderr,
@@ -43,8 +42,4 @@ const onData = (node) => {
   return result;
 };
 
-const onSuccess = () => {};
-
-const onFailure = () => {};
-
-module.exports = GET('read-logs', buildPath, onData, onSuccess, onFailure);
+module.exports = GET('read-logs', buildPath, onData);
