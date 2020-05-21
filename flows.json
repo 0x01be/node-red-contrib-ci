@@ -310,7 +310,7 @@
         "hostname": "host.docker.internal",
         "port": "1234",
         "x": 290,
-        "y": 540,
+        "y": 580,
         "wires": [
             [
                 "8d91446f.3aa4b",
@@ -345,7 +345,7 @@
         "complete": "payload.stream",
         "targetType": "msg",
         "x": 510,
-        "y": 540,
+        "y": 580,
         "wires": []
     },
     {
@@ -389,7 +389,7 @@
         "hostname": "host.docker.internal",
         "port": "1234",
         "x": 280,
-        "y": 700,
+        "y": 500,
         "wires": [
             [
                 "72ba4632.5fd4e8"
@@ -408,7 +408,7 @@
         "complete": "payload.State.Status",
         "targetType": "msg",
         "x": 510,
-        "y": 700,
+        "y": 500,
         "wires": []
     },
     {
@@ -426,7 +426,7 @@
         "resendOnRefresh": false,
         "templateScope": "local",
         "x": 520,
-        "y": 620,
+        "y": 660,
         "wires": [
             []
         ]
