@@ -160,7 +160,7 @@
         "name": "Build log",
         "order": 2,
         "width": "18",
-        "height": "4",
+        "height": "10",
         "format": "<pre ng-bind-html=\"msg.payload.log\"></pre>",
         "storeOutMessages": false,
         "fwdInMessages": false,
@@ -187,7 +187,7 @@
         "color": "",
         "bgcolor": "",
         "icon": "",
-        "payload": "{\"remote\":\"http://localhost:3000/ddm/node-red-docker/raw/master/Dockerfile\",\"log\":\"\",\"Id\":\"\"}",
+        "payload": "{\"remote\":\"http://localhost:3000/ddm/litest/raw/master/Dockerfile\",\"log\":\"\",\"Id\":\"\"}",
         "payloadType": "json",
         "topic": "",
         "x": 110,
@@ -217,10 +217,12 @@
         "y": 180,
         "wires": [
             [
-                "d8025478.3647"
+                "d8025478.3647",
+                "39e4acab.38bae4"
             ],
             [
-                "248fedb9.b47f1a"
+                "248fedb9.b47f1a",
+                "39e4acab.38bae4"
             ]
         ]
     },
@@ -241,7 +243,8 @@
                 "e9a2cea.9387eb",
                 "219d36bc.a2f04a",
                 "e63cdc7f.caf3b8",
-                "127cab78.d3529d"
+                "127cab78.d3529d",
+                "39e4acab.38bae4"
             ]
         ]
     },
@@ -259,7 +262,8 @@
             [
                 "2be013cb.8e7f6c",
                 "3be22757.61c6b",
-                "127cab78.d3529d"
+                "127cab78.d3529d",
+                "39e4acab.38bae4"
             ]
         ]
     },
@@ -277,7 +281,8 @@
         "y": 220,
         "wires": [
             [
-                "de772a1d.18a57"
+                "de772a1d.18a57",
+                "39e4acab.38bae4"
             ]
         ]
     },
@@ -293,7 +298,8 @@
         "y": 400,
         "wires": [
             [
-                "127cab78.d3529d"
+                "127cab78.d3529d",
+                "39e4acab.38bae4"
             ]
         ]
     },
@@ -309,7 +315,8 @@
         "y": 460,
         "wires": [
             [
-                "e63cdc7f.caf3b8"
+                "e63cdc7f.caf3b8",
+                "39e4acab.38bae4"
             ]
         ]
     },
@@ -321,7 +328,7 @@
         "name": "Run log",
         "order": 3,
         "width": "18",
-        "height": "9",
+        "height": "4",
         "format": "<pre ng-bind-html=\"msg.payload.log\"></pre>",
         "storeOutMessages": false,
         "fwdInMessages": false,
@@ -369,9 +376,9 @@
         "id": "26d0769c.0ad7ca",
         "type": "comment",
         "z": "5aabf089.3ea8d",
-        "name": "Dashboard at /dashboard",
-        "info": "# Dashboard\n\n## UI\n\n[/dashboard](http://localhost:1880/dashboard/)\n\n## Remote\n\n[/Dockerfile](http://localhost:3000/ddm/node-red-docker/raw/master/Dockerfile)\n",
-        "x": 130,
+        "name": "UIs",
+        "info": "# Dashboard\n\n## UI\n\n[/dashboard](http://localhost:1880/dashboard/)\n\n## swagger.json\n\n[/http-api/swagger.json](http://localhost:1880/http-api/swagger.json)\n",
+        "x": 70,
         "y": 580,
         "wires": []
     },
@@ -409,15 +416,15 @@
         "id": "39e4acab.38bae4",
         "type": "debug",
         "z": "5aabf089.3ea8d",
-        "name": "push",
+        "name": "",
         "active": true,
         "tosidebar": true,
         "console": false,
-        "tostatus": false,
+        "tostatus": true,
         "complete": "payload",
         "targetType": "msg",
-        "x": 110,
-        "y": 340,
+        "x": 310,
+        "y": 580,
         "wires": []
     },
     {
@@ -432,18 +439,9 @@
         "y": 240,
         "wires": [
             [
-                "67a711b1.6be8b8"
+                "67a711b1.6be8b8",
+                "39e4acab.38bae4"
             ]
         ]
-    },
-    {
-        "id": "3abb655d.d4a9da",
-        "type": "comment",
-        "z": "5aabf089.3ea8d",
-        "name": "API at /http-api/swagger.json",
-        "info": "# API\n\n## swagger.json\n\n[/dashboard](http://localhost:1880/http-api/swagger.json)\n",
-        "x": 140,
-        "y": 540,
-        "wires": []
     }
 ]

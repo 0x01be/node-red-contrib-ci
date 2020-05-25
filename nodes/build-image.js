@@ -54,25 +54,26 @@ module.exports = (RED) => {
 
         response.on('data', (chunk) => {
           if (chunk && chunk !== '') {
-            const message = JSON.parse(chunk);
-
-            if (message.aux && (typeof message.aux.ID === 'string') && message.aux.ID.startsWith('sha256:')) {
-              image = {
-                Id: message.aux.ID.slice(7)
-              };
-            }
-
-            // Status messages are ignored
-            if (message.stream) {
-              log.push(message.stream);
-
-              node.send([null, {
-                payload: {
-                  stream: message.stream,
-                  log: log.full()
-                }
-              }]);
-            }
+            try {
+              const message = JSON.parse(chunk);
+              if (message.aux && (typeof message.aux.ID === 'string') && message.aux.ID.startsWith('sha256:')) {
+                image = {
+                  Id: message.aux.ID.slice(7)
+                };
+              }
+  
+              // Status messages are ignored
+              if (message.stream) {
+                log.push(message.stream);
+  
+                node.send([null, {
+                  payload: {
+                    stream: message.stream,
+                    log: log.full()
+                  }
+                }]);
+              }
+            } catch (_) {}
           }
         });
 
