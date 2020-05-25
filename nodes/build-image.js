@@ -54,7 +54,6 @@ module.exports = (RED) => {
 
         response.on('data', (chunk) => {
           if (chunk && chunk !== '') {
-            // Always JSON
             const message = JSON.parse(chunk);
 
             if (message.aux && (typeof message.aux.ID === 'string') && message.aux.ID.startsWith('sha256:')) {
@@ -78,9 +77,7 @@ module.exports = (RED) => {
         });
 
         response.on('end', () => {
-          const success = isSuccessful(response, image);
-
-          if (success) {
+          if (isSuccessful(response, image)) {
             node.send([{
               payload: image
             }, null]);

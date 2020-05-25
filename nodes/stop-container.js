@@ -18,7 +18,6 @@ module.exports = (RED) => {
 
         response.on('data', (chunk) => {
           if (chunk && chunk !== '') {
-            // Always JSON
             message = JSON.parse(chunk);
           }
         });
