@@ -6,3 +6,4 @@ node_modules
 .DS_Store
 nodes/.DS_Store
 static/.DS_Store
+gogs
