@@ -425,7 +425,7 @@
         "type": "function",
         "z": "5aabf089.3ea8d",
         "name": "",
-        "func": "const commit = \"a91255ee45\";\nmsg.payload = {\n  commit: commit\n};\nnode.send(msg);",
+        "func": "const commit = msg.payload.after;\nmsg.payload = {\n  commit: commit\n};\nnode.send(msg);",
         "outputs": 1,
         "noerr": 0,
         "x": 110,
