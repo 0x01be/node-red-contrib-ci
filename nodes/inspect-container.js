@@ -19,10 +19,10 @@ const onData = () => {
   return result;
 };
 
-const onSuccess = (node, data) => {
-  node.send({
-    payload: JSON.parse(data)
-  });
+const onSuccess = (msg, node, data) => {
+  msg.payload = JSON.parse(data);
+
+  node.send(msg);
 };
 
 const onFailure = () => {};

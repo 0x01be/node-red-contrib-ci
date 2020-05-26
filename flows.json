@@ -2,7 +2,7 @@
     {
         "id": "5aabf089.3ea8d",
         "type": "tab",
-        "label": "Sample",
+        "label": "node-red-docker",
         "disabled": false,
         "info": ""
     },
@@ -122,6 +122,26 @@
         "deprecated": false
     },
     {
+        "id": "4ceaef4b.d0154",
+        "type": "ui_tab",
+        "z": "",
+        "name": "CI",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "957cca54.366a48",
+        "type": "ui_group",
+        "z": "",
+        "name": "node-red-docker",
+        "tab": "4ceaef4b.d0154",
+        "order": 1,
+        "disp": true,
+        "width": "14",
+        "collapse": false
+    },
+    {
         "id": "190d4eb1.a0ea49",
         "type": "build-image",
         "z": "5aabf089.3ea8d",
@@ -132,14 +152,16 @@
         "protocol": "http",
         "hostname": "host.docker.internal",
         "port": "1234",
-        "x": 290,
-        "y": 180,
+        "x": 470,
+        "y": 140,
         "wires": [
             [
-                "d8025478.3647"
+                "d8025478.3647",
+                "9dc4cf95.0aa2a8"
             ],
             [
-                "5c8ace5d.bd43b8"
+                "44600677.74c75",
+                "4cbc1912.678c98"
             ]
         ]
     },
@@ -153,12 +175,13 @@
         "protocol": "http",
         "hostname": "host.docker.internal",
         "port": "1234",
-        "x": 410,
-        "y": 260,
+        "x": 250,
+        "y": 60,
         "wires": [
             [
                 "e9a2cea.9387eb",
-                "63bf0368.59fdf4"
+                "4beb05f3.09e684",
+                "8e20b0b4.8b60d8"
             ]
         ]
     },
@@ -170,13 +193,12 @@
         "protocol": "http",
         "hostname": "host.docker.internal",
         "port": "1234",
-        "x": 110,
-        "y": 360,
+        "x": 170,
+        "y": 320,
         "wires": [
             [
                 "2be013cb.8e7f6c",
-                "3be22757.61c6b",
-                "63bf0368.59fdf4"
+                "ea6c5d88.37e83"
             ]
         ]
     },
@@ -191,26 +213,12 @@
         "hostname": "host.docker.internal",
         "port": "1234",
         "x": 330,
-        "y": 360,
+        "y": 320,
         "wires": [
             [
-                "5c8ace5d.bd43b8"
-            ]
-        ]
-    },
-    {
-        "id": "3be22757.61c6b",
-        "type": "stop-container",
-        "z": "5aabf089.3ea8d",
-        "name": "",
-        "protocol": "http",
-        "hostname": "host.docker.internal",
-        "port": "1234",
-        "x": 230,
-        "y": 440,
-        "wires": [
-            [
-                "63bf0368.59fdf4"
+                "44600677.74c75",
+                "9cbcfbb3.fd7fc",
+                "4cbc1912.678c98"
             ]
         ]
     },
@@ -218,10 +226,10 @@
         "id": "26d0769c.0ad7ca",
         "type": "comment",
         "z": "5aabf089.3ea8d",
-        "name": "Interfaces",
-        "info": "## API\n\n[/http-api/swagger.json](http://localhost:1880/http-api/swagger.json)\n\n## Build webhook\n\n[POST] http://localhost:1880/build\n\n## Gogs (Git)\n\nhttp://localhost:3000/\n\n## Remote\n\nhttp://localhost:3000/ddm/litest/raw/master/Dockerfile\n",
-        "x": 80,
-        "y": 580,
+        "name": "Welcome",
+        "info": "## Dashboard\n\n[/dashboard](/dashboard)\n\n## Dockerfile\n\n```\nFROM dimdm/node-red-docker\n\nRUN echo \"Nothing to build...\"\n```\n\n## Build webhook\n\n`[POST] http://localhost:1880/build`",
+        "x": 100,
+        "y": 520,
         "wires": []
     },
     {
@@ -233,18 +241,34 @@
         "method": "post",
         "upload": false,
         "swaggerDoc": "6dc3181b.94ee6",
-        "x": 90,
-        "y": 180,
+        "x": 110,
+        "y": 140,
         "wires": [
             [
+                "95d30de2.1c07b",
                 "67a711b1.6be8b8",
-                "2e1635da.84d492",
-                "5999c73.1e2c3b8"
+                "aaf24401.7d2a48"
             ]
         ]
     },
     {
-        "id": "5c8ace5d.bd43b8",
+        "id": "95d30de2.1c07b",
+        "type": "function",
+        "z": "5aabf089.3ea8d",
+        "name": "remote",
+        "func": "const url = msg.payload.commits[0].url.replace('commit', 'raw');\n\nnode.send({\n    payload: {\n        remote:`${url}/Dockerfile`\n    }\n});",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 300,
+        "y": 140,
+        "wires": [
+            [
+                "190d4eb1.a0ea49"
+            ]
+        ]
+    },
+    {
+        "id": "44600677.74c75",
         "type": "debug",
         "z": "5aabf089.3ea8d",
         "name": "stream",
@@ -254,100 +278,196 @@
         "tostatus": true,
         "complete": "payload.stream",
         "targetType": "msg",
-        "x": 410,
-        "y": 80,
+        "x": 490,
+        "y": 320,
         "wires": []
     },
     {
-        "id": "67a711b1.6be8b8",
-        "type": "http response",
+        "id": "9cbcfbb3.fd7fc",
+        "type": "function",
         "z": "5aabf089.3ea8d",
-        "name": "Created",
-        "statusCode": "201",
-        "headers": {},
-        "x": 240,
-        "y": 260,
+        "name": "Assert server started",
+        "func": "const success = (typeof msg.payload.stream === 'string')\n                && msg.payload.stream.includes('Server now running');\n\nif (success) {\n    node.send({\n        payload: {\n            success: success,\n            Id: msg.payload.Id\n        }\n    });\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 200,
+        "y": 440,
+        "wires": [
+            [
+                "31ec1937.9df13e",
+                "859abcbc.f05f2",
+                "8e20b0b4.8b60d8"
+            ]
+        ]
+    },
+    {
+        "id": "31ec1937.9df13e",
+        "type": "debug",
+        "z": "5aabf089.3ea8d",
+        "name": "success",
+        "active": true,
+        "tosidebar": false,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload.success",
+        "targetType": "msg",
+        "x": 480,
+        "y": 460,
         "wires": []
     },
     {
-        "id": "63bf0368.59fdf4",
+        "id": "859abcbc.f05f2",
+        "type": "stop-container",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "protocol": "http",
+        "hostname": "host.docker.internal",
+        "port": "1234",
+        "x": 390,
+        "y": 380,
+        "wires": [
+            [
+                "ea6c5d88.37e83"
+            ]
+        ]
+    },
+    {
+        "id": "ea6c5d88.37e83",
         "type": "inspect-container",
         "z": "5aabf089.3ea8d",
         "name": "",
-        "protocol": "https",
+        "protocol": "http",
         "hostname": "host.docker.internal",
         "port": "1234",
-        "x": 360,
+        "x": 320,
         "y": 520,
         "wires": [
             [
-                "f4098bff.1ae5a"
+                "440cb4cc.dfba74",
+                "a74686d9.b2e02"
             ]
         ]
     },
     {
-        "id": "2e1635da.84d492",
-        "type": "template",
-        "z": "5aabf089.3ea8d",
-        "name": "",
-        "field": "payload",
-        "fieldType": "msg",
-        "format": "json",
-        "syntax": "mustache",
-        "template": "{\n    \"remote\": \"http://localhost:3000/ddm/litest/raw/master/Dockerfile\"\n}",
-        "output": "json",
-        "x": 200,
-        "y": 80,
-        "wires": [
-            [
-                "190d4eb1.a0ea49",
-                "a9505c15.073888"
-            ]
-        ]
-    },
-    {
-        "id": "f4098bff.1ae5a",
+        "id": "440cb4cc.dfba74",
         "type": "debug",
         "z": "5aabf089.3ea8d",
-        "name": "info",
+        "name": "status",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": true,
         "complete": "payload.State.Status",
         "targetType": "msg",
-        "x": 430,
-        "y": 440,
+        "x": 490,
+        "y": 560,
         "wires": []
     },
     {
-        "id": "5999c73.1e2c3b8",
-        "type": "debug",
+        "id": "67a711b1.6be8b8",
+        "type": "http response",
         "z": "5aabf089.3ea8d",
-        "name": "commit",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "x": 100,
-        "y": 300,
+        "name": "created",
+        "statusCode": "201",
+        "headers": {},
+        "x": 300,
+        "y": 200,
         "wires": []
     },
     {
-        "id": "a9505c15.073888",
-        "type": "debug",
+        "id": "aaf24401.7d2a48",
+        "type": "ui_text",
         "z": "5aabf089.3ea8d",
-        "name": "remote",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "x": 340,
-        "y": 40,
+        "group": "957cca54.366a48",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "Commit",
+        "format": "{{msg.payload.after}}",
+        "layout": "row-left",
+        "x": 120,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "9dc4cf95.0aa2a8",
+        "type": "ui_text",
+        "z": "5aabf089.3ea8d",
+        "group": "957cca54.366a48",
+        "order": 2,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "Image",
+        "format": "{{msg.payload.Id}}",
+        "layout": "row-left",
+        "x": 510,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "4beb05f3.09e684",
+        "type": "ui_text",
+        "z": "5aabf089.3ea8d",
+        "group": "957cca54.366a48",
+        "order": 3,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "Container",
+        "format": "{{msg.payload.Id}}",
+        "layout": "row-left",
+        "x": 500,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "a74686d9.b2e02",
+        "type": "ui_text",
+        "z": "5aabf089.3ea8d",
+        "group": "957cca54.366a48",
+        "order": 4,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "Status",
+        "format": "{{msg.payload.State.Status}}",
+        "layout": "row-left",
+        "x": 490,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "8e20b0b4.8b60d8",
+        "type": "ui_text",
+        "z": "5aabf089.3ea8d",
+        "group": "957cca54.366a48",
+        "order": 6,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "Success",
+        "format": "{{msg.payload.success}}",
+        "layout": "row-left",
+        "x": 480,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "4cbc1912.678c98",
+        "type": "ui_text",
+        "z": "5aabf089.3ea8d",
+        "group": "957cca54.366a48",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "stdout",
+        "format": "{{msg.payload.stream}}",
+        "layout": "row-left",
+        "x": 490,
+        "y": 280,
         "wires": []
     }
 ]

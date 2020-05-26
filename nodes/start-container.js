@@ -17,24 +17,23 @@ module.exports = (RED) => {
         let message = undefined;
 
         response.on('data', (chunk) => {
-          if (chunk && chunk !== '') {
-            message = JSON.parse(chunk);
+          if ((typeof chunk === 'string') && chunk !== '') {
+            try {
+              message = JSON.parse(chunk);
+            } catch (_) {}
           }
         });
 
         response.on('end', () => {
           const success = response.complete && (response.statusCode === 204);
+          
           if (success) {
-            node.send({
-              payload: {
-                Id: msg.payload.Id
-              }
-            });
+            msg.payload = { Id: msg.payload.Id };
           } else {
-            node.send({
-              payload: message
-            });
+            msg.payload = message;
           }
+
+          node.send(msg);
         });
       });
 

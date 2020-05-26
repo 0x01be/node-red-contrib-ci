@@ -21,17 +21,17 @@ module.exports = (name, buildPath, onData, onSuccess, onFailure) => {
         }, (response) => {
           response.setEncoding('utf8');
 
-          const onChunk = onData(node);
+          const onChunk = onData(node, msg);
 
           response.on('data', onChunk);
 
           response.on('end', () => {
             if (isSuccessful(response)) {
               if (typeof onSuccess === 'function') {
-                onSuccess(node, onChunk.accumulator);
+                onSuccess(msg, node, onChunk.accumulator);
               }
             } else if (typeof onFailure === 'function') {
-              onFailure(node, onChunk.accumulator);
+              onFailure(msg, node, onChunk.accumulator);
             }
           });
         });

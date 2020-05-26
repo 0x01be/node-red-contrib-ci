@@ -69,9 +69,8 @@ module.exports = (RED) => {
 
         response.on('end', () => {
           if (isSuccessful(response, image)) {
-            node.send([{
-              payload: image
-            }, null]);
+            msg.payload = image;
+            node.send([msg, null]);
           }
         });
       });

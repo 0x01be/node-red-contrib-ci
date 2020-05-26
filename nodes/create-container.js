@@ -29,34 +29,29 @@ module.exports = (RED) => {
         let message = undefined;
 
         response.on('data', (chunk) => {
-          if (chunk && chunk !== '') {
-            message = JSON.parse(chunk);
+          if ((typeof chunk === 'string') && chunk !== '') {
+            try {
+              message = JSON.parse(chunk);
 
             if ((typeof message.Id === 'string') && message.Id !== '') {
               container = {
                 Id: message.Id
               };
             }
+            } catch (_) {}
           }
         });
 
         response.on('end', () => {
           const success = response.complete && (response.statusCode === 201) 
                         && container && (typeof container.Id === 'string') && container.Id !== '';
-          if (success) {
-            node.send({
-              payload: container
-            });
-          } else {
-            node.send({
-              payload: message
-            });
-          }
+          msg.payload = success ? container : message;
+          node.send(msg);
         });
       });
 
       const image = ((typeof msg.payload.Id === 'string') && msg.payload.Id !== '') ? msg.payload.Id : config.image;
-      const payload = `{"Image": "${image}"}`;
+      const payload = `{"Tty": true,"Image": "${image}"}`;
 
       request.write(payload);
       request.end();

@@ -14,17 +14,19 @@ const buildPath = (msg, config) => {
   return `/containers/${id}/logs?${query}`;
 }
 
-const onData = (node) => {
+const onData = (node, msg) => {
 
   const result = (chunk) => {
     // cf. https://docs.docker.com/engine/api/v1.40/#operation/ContainerAttach
-    const line = chunk.slice(8);
+    // If "Tty": false in create-container.js
+    // const line = chunk.slice(8);
 
-    node.send({
-      payload: {
-        stream: line
-      }
-    });
+    msg.payload = {
+      stream: chunk,
+      Id: msg.payload.Id
+    };
+
+    node.send(msg);
   };
 
   return result;
