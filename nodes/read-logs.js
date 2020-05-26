@@ -16,28 +16,16 @@ const buildPath = (msg, config) => {
 
 const onData = (node) => {
 
-  const log = [];
-  log.full = () => {
-    return log.reduce((accumulator, value) => {
-      return `${accumulator}${value}`;
-    }, "");
-  };
-
   const result = (chunk) => {
     // cf. https://docs.docker.com/engine/api/v1.40/#operation/ContainerAttach
     const line = chunk.slice(8);
 
-    log.push(line);
-
     node.send({
       payload: {
-        stream: line,
-        log: log.full()
+        stream: line
       }
     });
   };
-
-  result.log = log;
 
   return result;
 };

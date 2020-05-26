@@ -3,9 +3,7 @@
   "version": "0.0.1",
   "description": "Docker with Node RED",
   "keywords": [
-    "node-red-docker",
-    "docker",
-    "continous-integration"
+    
   ],
   "node-red": {
     "nodes": {

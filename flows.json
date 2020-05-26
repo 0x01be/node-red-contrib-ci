@@ -105,37 +105,6 @@
         }
     },
     {
-        "id": "aea162e7.b7cec",
-        "type": "ui_tab",
-        "z": "",
-        "name": "CI",
-        "icon": "dashboard",
-        "disabled": false,
-        "hidden": true
-    },
-    {
-        "id": "3ed7103d.ce2a7",
-        "type": "ui_group",
-        "z": "",
-        "name": "Output",
-        "tab": "aea162e7.b7cec",
-        "order": 2,
-        "disp": false,
-        "width": "18",
-        "collapse": false
-    },
-    {
-        "id": "805f2c66.ba6e88",
-        "type": "ui_group",
-        "z": "",
-        "name": "Summary",
-        "tab": "aea162e7.b7cec",
-        "order": 1,
-        "disp": false,
-        "width": "18",
-        "collapse": false
-    },
-    {
         "id": "6dc3181b.94ee6",
         "type": "swagger-doc",
         "z": "",
@@ -153,56 +122,6 @@
         "deprecated": false
     },
     {
-        "id": "248fedb9.b47f1a",
-        "type": "ui_template",
-        "z": "5aabf089.3ea8d",
-        "group": "3ed7103d.ce2a7",
-        "name": "Build log",
-        "order": 2,
-        "width": "18",
-        "height": "10",
-        "format": "<pre ng-bind-html=\"msg.payload.log\"></pre>",
-        "storeOutMessages": false,
-        "fwdInMessages": false,
-        "resendOnRefresh": false,
-        "templateScope": "local",
-        "x": 520,
-        "y": 80,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "4253048d.179f34",
-        "type": "ui_button",
-        "z": "5aabf089.3ea8d",
-        "name": "Button",
-        "group": "3ed7103d.ce2a7",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "passthru": true,
-        "label": "Build and run",
-        "tooltip": "",
-        "color": "",
-        "bgcolor": "",
-        "icon": "",
-        "payload": "{\"remote\":\"http://localhost:3000/ddm/litest/raw/master/Dockerfile\",\"log\":\"\",\"Id\":\"\"}",
-        "payloadType": "json",
-        "topic": "",
-        "x": 110,
-        "y": 80,
-        "wires": [
-            [
-                "190d4eb1.a0ea49",
-                "e63cdc7f.caf3b8",
-                "248fedb9.b47f1a",
-                "de772a1d.18a57",
-                "219d36bc.a2f04a"
-            ]
-        ]
-    },
-    {
         "id": "190d4eb1.a0ea49",
         "type": "build-image",
         "z": "5aabf089.3ea8d",
@@ -217,12 +136,10 @@
         "y": 180,
         "wires": [
             [
-                "d8025478.3647",
-                "39e4acab.38bae4"
+                "d8025478.3647"
             ],
             [
-                "248fedb9.b47f1a",
-                "39e4acab.38bae4"
+                "5c8ace5d.bd43b8"
             ]
         ]
     },
@@ -236,15 +153,12 @@
         "protocol": "http",
         "hostname": "host.docker.internal",
         "port": "1234",
-        "x": 290,
-        "y": 280,
+        "x": 410,
+        "y": 260,
         "wires": [
             [
                 "e9a2cea.9387eb",
-                "219d36bc.a2f04a",
-                "e63cdc7f.caf3b8",
-                "127cab78.d3529d",
-                "39e4acab.38bae4"
+                "63bf0368.59fdf4"
             ]
         ]
     },
@@ -256,14 +170,13 @@
         "protocol": "http",
         "hostname": "host.docker.internal",
         "port": "1234",
-        "x": 290,
-        "y": 340,
+        "x": 110,
+        "y": 360,
         "wires": [
             [
                 "2be013cb.8e7f6c",
                 "3be22757.61c6b",
-                "127cab78.d3529d",
-                "39e4acab.38bae4"
+                "63bf0368.59fdf4"
             ]
         ]
     },
@@ -277,12 +190,11 @@
         "protocol": "http",
         "hostname": "host.docker.internal",
         "port": "1234",
-        "x": 510,
-        "y": 220,
+        "x": 330,
+        "y": 360,
         "wires": [
             [
-                "de772a1d.18a57",
-                "39e4acab.38bae4"
+                "5c8ace5d.bd43b8"
             ]
         ]
     },
@@ -294,91 +206,21 @@
         "protocol": "http",
         "hostname": "host.docker.internal",
         "port": "1234",
-        "x": 290,
-        "y": 400,
+        "x": 230,
+        "y": 440,
         "wires": [
             [
-                "127cab78.d3529d",
-                "39e4acab.38bae4"
+                "63bf0368.59fdf4"
             ]
         ]
-    },
-    {
-        "id": "127cab78.d3529d",
-        "type": "inspect-container",
-        "z": "5aabf089.3ea8d",
-        "name": "",
-        "protocol": "http",
-        "hostname": "host.docker.internal",
-        "port": "1234",
-        "x": 280,
-        "y": 460,
-        "wires": [
-            [
-                "e63cdc7f.caf3b8",
-                "39e4acab.38bae4"
-            ]
-        ]
-    },
-    {
-        "id": "de772a1d.18a57",
-        "type": "ui_template",
-        "z": "5aabf089.3ea8d",
-        "group": "3ed7103d.ce2a7",
-        "name": "Run log",
-        "order": 3,
-        "width": "18",
-        "height": "4",
-        "format": "<pre ng-bind-html=\"msg.payload.log\"></pre>",
-        "storeOutMessages": false,
-        "fwdInMessages": false,
-        "resendOnRefresh": false,
-        "templateScope": "local",
-        "x": 520,
-        "y": 140,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "e63cdc7f.caf3b8",
-        "type": "ui_text",
-        "z": "5aabf089.3ea8d",
-        "group": "805f2c66.ba6e88",
-        "order": 3,
-        "width": "3",
-        "height": "1",
-        "name": "",
-        "label": "Status:",
-        "format": "{{msg.payload.State.Status}}",
-        "layout": "row-left",
-        "x": 520,
-        "y": 400,
-        "wires": []
-    },
-    {
-        "id": "219d36bc.a2f04a",
-        "type": "ui_text",
-        "z": "5aabf089.3ea8d",
-        "group": "805f2c66.ba6e88",
-        "order": 2,
-        "width": "15",
-        "height": "1",
-        "name": "",
-        "label": "Container:",
-        "format": "{{msg.payload.Id}}",
-        "layout": "row-left",
-        "x": 510,
-        "y": 280,
-        "wires": []
     },
     {
         "id": "26d0769c.0ad7ca",
         "type": "comment",
         "z": "5aabf089.3ea8d",
-        "name": "UIs",
-        "info": "# Dashboard\n\n## UI\n\n[/dashboard](http://localhost:1880/dashboard/)\n\n## swagger.json\n\n[/http-api/swagger.json](http://localhost:1880/http-api/swagger.json)\n",
-        "x": 70,
+        "name": "Interfaces",
+        "info": "## API\n\n[/http-api/swagger.json](http://localhost:1880/http-api/swagger.json)\n\n## Build webhook\n\n[POST] http://localhost:1880/build\n\n## Gogs (Git)\n\nhttp://localhost:3000/\n\n## Remote\n\nhttp://localhost:3000/ddm/litest/raw/master/Dockerfile\n",
+        "x": 80,
         "y": 580,
         "wires": []
     },
@@ -395,11 +237,26 @@
         "y": 180,
         "wires": [
             [
-                "4253048d.179f34",
-                "39e4acab.38bae4",
-                "60cd3406.309874"
+                "67a711b1.6be8b8",
+                "2e1635da.84d492",
+                "5999c73.1e2c3b8"
             ]
         ]
+    },
+    {
+        "id": "5c8ace5d.bd43b8",
+        "type": "debug",
+        "z": "5aabf089.3ea8d",
+        "name": "stream",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload.stream",
+        "targetType": "msg",
+        "x": 410,
+        "y": 80,
+        "wires": []
     },
     {
         "id": "67a711b1.6be8b8",
@@ -408,40 +265,89 @@
         "name": "Created",
         "statusCode": "201",
         "headers": {},
-        "x": 120,
-        "y": 300,
+        "x": 240,
+        "y": 260,
         "wires": []
     },
     {
-        "id": "39e4acab.38bae4",
-        "type": "debug",
+        "id": "63bf0368.59fdf4",
+        "type": "inspect-container",
         "z": "5aabf089.3ea8d",
         "name": "",
+        "protocol": "https",
+        "hostname": "host.docker.internal",
+        "port": "1234",
+        "x": 360,
+        "y": 520,
+        "wires": [
+            [
+                "f4098bff.1ae5a"
+            ]
+        ]
+    },
+    {
+        "id": "2e1635da.84d492",
+        "type": "template",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "json",
+        "syntax": "mustache",
+        "template": "{\n    \"remote\": \"http://localhost:3000/ddm/litest/raw/master/Dockerfile\"\n}",
+        "output": "json",
+        "x": 200,
+        "y": 80,
+        "wires": [
+            [
+                "190d4eb1.a0ea49",
+                "a9505c15.073888"
+            ]
+        ]
+    },
+    {
+        "id": "f4098bff.1ae5a",
+        "type": "debug",
+        "z": "5aabf089.3ea8d",
+        "name": "info",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": true,
-        "complete": "payload",
+        "complete": "payload.State.Status",
         "targetType": "msg",
-        "x": 310,
-        "y": 580,
+        "x": 430,
+        "y": 440,
         "wires": []
     },
     {
-        "id": "60cd3406.309874",
-        "type": "function",
+        "id": "5999c73.1e2c3b8",
+        "type": "debug",
         "z": "5aabf089.3ea8d",
-        "name": "",
-        "func": "const commit = msg.payload.after;\nmsg.payload = {\n  commit: commit\n};\nnode.send(msg);",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 110,
-        "y": 240,
-        "wires": [
-            [
-                "67a711b1.6be8b8",
-                "39e4acab.38bae4"
-            ]
-        ]
+        "name": "commit",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 100,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "a9505c15.073888",
+        "type": "debug",
+        "z": "5aabf089.3ea8d",
+        "name": "remote",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 340,
+        "y": 40,
+        "wires": []
     }
 ]

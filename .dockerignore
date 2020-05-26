@@ -7,3 +7,4 @@ node_modules
 nodes/.DS_Store
 static/.DS_Store
 gogs
+.npm

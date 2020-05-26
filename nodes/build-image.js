@@ -43,13 +43,6 @@ module.exports = (RED) => {
       }, (response) => {
         response.setEncoding('utf8');
 
-        const log = [];
-        log.full = () => {
-          return log.reduce((accumulator, value) => {
-            return `${accumulator}${value}`;
-          }, "");
-        };
-
         let image = undefined;
 
         response.on('data', (chunk) => {
@@ -64,12 +57,9 @@ module.exports = (RED) => {
   
               // Status messages are ignored
               if (message.stream) {
-                log.push(message.stream);
-  
                 node.send([null, {
                   payload: {
-                    stream: message.stream,
-                    log: log.full()
+                    stream: message.stream
                   }
                 }]);
               }

@@ -19,7 +19,7 @@
                 value: 'https',
                 required: true,
                 validate: (value) => {
-                    return (value === 'http') || (value === 'https')
+                    return (value === 'http') || (value === 'https');
                 }
             },
             hostname: {
@@ -80,7 +80,7 @@
 </script>
 
 <script type="text/html" data-help-name="read-logs">
-    <p>Get a docker container's logs</p>
+    <p>Get stdout for a docker container</p>
     <h3>Input: container</h3>
     <dl class="message-properties">
         <dt>payload
@@ -88,11 +88,11 @@
             <code><pre>{ Id: 'string' }</pre></code>
         </dt>
     </dl>
-    <h3>Output: stream and full log</h3>
+    <h3>Output: stdout stream</h3>
     <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{ stream: 'string', log: 'string' }</pre></code>
+            <code><pre>{ stream: 'string' }</pre></code>
         </dt>
     </dl>
 </script>
