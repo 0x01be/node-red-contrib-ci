@@ -287,7 +287,7 @@
         "type": "function",
         "z": "5aabf089.3ea8d",
         "name": "Assert server started",
-        "func": "const success = (typeof msg.payload.stream === 'string')\n                && msg.payload.stream.includes('Server now running');\n\nif (success) {\n    node.send({\n        payload: {\n            success: success,\n            Id: msg.payload.Id\n        }\n    });\n}",
+        "func": "const expected = 'Starting flows';\n\nconst success = (typeof msg.payload.stream === 'string')\n                && msg.payload.stream.includes(expected);\n\nif (success) {\n    node.send({\n        payload: {\n            success: success,\n            Id: msg.payload.Id\n        }\n    });\n}",
         "outputs": 1,
         "noerr": 0,
         "x": 200,
