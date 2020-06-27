@@ -1,8 +1,8 @@
 FROM nodered/node-red:latest-12-minimal
 
-RUN npm install node-red-dashboard node-red-node-swagger
+USER root
+RUN apk --no-cache add git 
 
-COPY *.* /data/
-COPY /nodes/ /data/nodes/
+USER node-red
+RUN npm install node-red-dashboard node-red-node-swagger && git clone https://github.com/0x01be/node-red-docker.git /data
 
-EXPOSE 1880
