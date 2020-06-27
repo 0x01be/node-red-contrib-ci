@@ -14,7 +14,7 @@ Docker on PORT 1234: `docker run --rm -d --name proxy -v /var/run/docker.sock:/v
 
 ## Use
 
-`docker run --rm -d --name node-red-docker -v $(pwd):/data -p 1880:1880 dimdm/node-red-docker`
+`docker run --rm -d --name node-red-docker -v $(pwd):/data -p 1880:1880 0x01be/node-red-docker`
 
 | Component     | URL |
 | ------------- | --- |
