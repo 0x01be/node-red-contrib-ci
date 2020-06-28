@@ -227,7 +227,7 @@
         "type": "comment",
         "z": "5aabf089.3ea8d",
         "name": "Welcome",
-        "info": "## Dashboard\n\n[/dashboard](/dashboard)\n\n## Dockerfile\n\n```\nFROM dimdm/node-red-docker\n\nRUN echo \"Nothing to build...\"\n```\n\n## Build webhook\n\n`[POST] http://localhost:1880/build`",
+        "info": "## Dashboard\n\n[/dashboard](/dashboard)\n\n## Dockerfile\n\n```\nFROM 0x01be/node-red-docker\n\nRUN echo \"Nothing to build...\"\n```\n\n## Build webhook\n\n`[POST] http://localhost:1880/build`",
         "x": 100,
         "y": 520,
         "wires": []
