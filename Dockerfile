@@ -1,4 +1,4 @@
-FROM nodered/node-red:1.0.6-2-12-minimal
+FROM nodered/node-red:1.1.2-2-12-minimal
 
 USER root
 RUN apk --no-cache add git 
