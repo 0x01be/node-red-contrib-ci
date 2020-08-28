@@ -1,0 +1,53 @@
+<script type="text/javascript">
+    RED.nodes.registerType('docker-config', {
+        category: 'config',
+        defaults: {
+          protocol: {
+            value: 'http',
+            required: true,
+            validate: function (value) {
+              return (value === 'http') || (value === 'https');
+            }
+          },
+          hostname: {
+            value: 'docker',
+            required: true,
+            validate: function (value) {
+              const ip = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+              const hostname = /^[a-z\d]([a-z\d\-]{0,61}[a-z\d])?(\.[a-z\d]([a-z\d\-]{0,61}[a-z\d])?)*$/;
+              return ip.test(value) || hostname.test(value);
+            }
+          },
+          port: {
+            value: 2375,
+            required: true,
+            validate: RED.validators.number()
+          }
+        },
+        label: function () {
+          return this.hostname + ':' + this.port;
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="docker-config">
+  <div class="form-row">
+    <label for="node-config-input-protocol"><i class="icon-tag"></i> Protocol</label>
+    <select name="node-config-input-protocol" id="node-config-input-protocol">
+      <option value="http">HTTP</option>
+      <option value="https">HTTPS</option>
+    </select>
+</div>
+  <div class="form-row">
+      <label for="node-config-input-hostname"><i class="icon-tag"></i> Hostname</label>
+      <input type="text" id="node-config-input-hostname" placeholder="docker">
+  </div>
+  <div class="form-row">
+      <label for="node-config-input-port"><i class="icon-tag"></i> Port</label>
+      <input type="number" id="node-config-input-port" placeholder="2375">
+  </div>
+</script>
+
+<script type="text/html" data-help-name="docker-config">
+    <p>Configure docker</p>
+</script>

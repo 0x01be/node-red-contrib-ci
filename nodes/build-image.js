@@ -1,13 +1,12 @@
-module.exports = (RED) => {
+module.exports = function (RED) {
 
-  const buildPath = (msg, config) => {
+  function buildPath (msg, config) {
     const remote = ((typeof msg.payload.remote === 'string') && msg.payload.remote !== '') ? msg.payload.remote : config.remote;
     const nocache = ((typeof msg.payload.nocache === 'string') && msg.payload.nocache !== '') ? msg.payload.nocache : config.nocache;
     const pull = ((typeof msg.payload.pull === 'string') && msg.payload.pull !== '') ? msg.payload.pull : config.pull;
 
     const query = require('querystring').stringify({
       remote: remote,
-      dockerfile: undefined,
       q: false,
       rm: true,
       forcerm: true,
@@ -18,58 +17,67 @@ module.exports = (RED) => {
     return `/build?${query}`;
   }
 
-  const isSuccessful = (response, image) => {
+  function isSuccessful (response, image) {
     const result = response.complete && (response.statusCode === 200) 
-                && image && (typeof image.Id === 'string') && (image.Id !== '');
+                && (typeof image === 'string') && (image !== '');
                 
     return result;
   }
 
   function BuildImageNode (config) {
     const node = this;
-
+    const docker = RED.nodes.getNode(config.docker);
+    
     RED.nodes.createNode(this, config);
 
-    node.on('input', (msg) => {
-      const request = require(config.protocol).request({
-        hostname: config.hostname,
-        port: config.port,
+    node.on('input', function (msg) {
+      const request = require(docker.protocol).request({
+        hostname: docker.hostname,
+        port: docker.port,
         path: buildPath(msg, config),
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-tar',
           'Content-Length': 0
         }
-      }, (response) => {
+      }, function (response) {
         response.setEncoding('utf8');
 
-        let image = undefined;
+        let result = undefined;
 
-        response.on('data', (chunk) => {
+        response.on('data', function (chunk) {
           if (chunk && chunk !== '') {
             try {
               const message = JSON.parse(chunk);
+
               if (message.aux && (typeof message.aux.ID === 'string') && message.aux.ID.startsWith('sha256:')) {
-                image = {
-                  Id: message.aux.ID.slice(7)
-                };
+                result = message.aux.ID.slice(7);
               }
   
               // Status messages are ignored
               if (message.stream) {
-                node.send([null, {
-                  payload: {
-                    stream: message.stream
-                  }
-                }]);
+                msg.payload = {
+                  commit: msg.payload.commit,
+                  repository: msg.payload.repository,
+                  stream: message.stream,
+                  time: new Date()
+                };
+
+                node.send([null, msg]);
               }
             } catch (_) {}
           }
         });
 
-        response.on('end', () => {
-          if (isSuccessful(response, image)) {
-            msg.payload = image;
+        response.on('end', function () {
+          if (isSuccessful(response, result)) {
+            msg.payload = {
+              commit: msg.payload.commit,
+              repository: msg.payload.repository,
+              image: result,
+              time: new Date()
+            };
+
             node.send([msg, null]);
           }
         });

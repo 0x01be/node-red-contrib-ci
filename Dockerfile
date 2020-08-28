@@ -1,8 +1,15 @@
-FROM nodered/node-red:1.1.2-12-minimal
+FROM nodered/node-red:1.1.3-12-minimal
 
-USER root
-RUN apk --no-cache add git 
-
-USER node-red
-RUN npm install node-red-dashboard node-red-node-swagger && git clone https://github.com/0x01be/node-red-docker.git /data
-
+RUN npm install \
+    @elastic/elasticsearch \
+    node-red-contrib-re-postgres \
+    node-red-contrib-influxdb \
+    node-red-contrib-spreadsheet-in \
+    node-red-contrib-wait-paths \
+    node-red-node-email \
+    node-red-dashboard \
+    node-red-node-swagger \
+    node-red-node-ui-table \
+    node-red-contrib-ui-svg \
+    node-red-contrib-ui-level
+    

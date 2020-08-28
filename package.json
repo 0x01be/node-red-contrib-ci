@@ -1,17 +1,25 @@
 {
-  "name": "node-red-docker",
+  "name": "node-red-contrib-ci",
   "version": "0.0.1",
-  "description": "Docker with Node RED",
+  "description": "The good parts of Docker on Node RED",
   "keywords": [
-    
+    "continuous",
+    "integration",
+    "CI"
   ],
   "node-red": {
     "nodes": {
+      "docker-config": "nodes/docker-config.js",
       "build-image": "nodes/build-image.js",
       "create-container": "nodes/create-container.js",
       "start-container": "nodes/start-container.js",
       "inspect-container": "nodes/inspect-container.js",
-      "read-logs": "nodes/read-logs.js"
+      "read-logs": "nodes/read-logs.js",
+      "elasticsearch-config": "nodes/elasticsearch-config.js",
+      "persist-event": "nodes/persist-event.js"
     }
+  },
+  "dependencies": {
+    "@elastic/elasticsearch": "7.9.0"
   }
 }

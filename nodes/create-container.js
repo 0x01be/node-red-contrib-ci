@@ -1,8 +1,8 @@
-module.exports = (RED) => {
+module.exports = function (RED) {
 
-  const buildPath = (msg) => {
-    const query = ((typeof msg.payload.name === 'string') && msg.payload.name !== '') ? require('querystring').stringify({
-      name: name
+  const buildPath = function (msg) {
+    const query = ((typeof msg.payload.image === 'string') && msg.payload.image !== '') ? require('querystring').stringify({
+      name: undefined
     }) : '';
 
     return `/containers/create?${query}`;
@@ -10,50 +10,58 @@ module.exports = (RED) => {
 
    function CreateContainerNode (config) {
     const node = this;
+    const docker = RED.nodes.getNode(config.docker);
 
     RED.nodes.createNode(this, config);
 
-    node.on('input', (msg) => {
-      const request = require(config.protocol).request({
-        hostname: config.hostname,
-        port: config.port,
+    node.on('input', function (msg) {
+      const request = require(docker.protocol).request({
+        hostname: docker.hostname,
+        port: docker.port,
         path: buildPath(msg),
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }, (response) => {
+        headers: { 'Content-Type': 'application/json' }
+      }, function (response) {
         response.setEncoding('utf8');
 
         let container = undefined;
         let message = undefined;
 
-        response.on('data', (chunk) => {
+        response.on('data', function (chunk) {
           if ((typeof chunk === 'string') && chunk !== '') {
             try {
               message = JSON.parse(chunk);
+              message.commit = msg.payload.commit;
+              message.repository = msg.payload.repository;
+              message.image = msg.payload.image;
+              message.time = new Date();
 
-            if ((typeof message.Id === 'string') && message.Id !== '') {
-              container = {
-                Id: message.Id
-              };
-            }
+              if ((typeof message.Id === 'string') && message.Id !== '') {
+                container = {
+                  commit: message.commit,
+                  repository: message.repository,
+                  image: message.image,
+                  container: message.Id,
+                  time: message.time
+                };
+              }
             } catch (_) {}
           }
         });
 
-        response.on('end', () => {
+        response.on('end', function () {
           const success = response.complete && (response.statusCode === 201) 
-                        && container && (typeof container.Id === 'string') && container.Id !== '';
+                        && container && (typeof container.container === 'string') && container.container !== '';
+
           msg.payload = success ? container : message;
+
           node.send(msg);
         });
       });
 
-      const image = ((typeof msg.payload.Id === 'string') && msg.payload.Id !== '') ? msg.payload.Id : config.image;
-      const payload = `{"Tty": true,"Image": "${image}"}`;
+      const image = ((typeof msg.payload.image === 'string') && msg.payload.image !== '') ? msg.payload.image : config.image;
 
-      request.write(payload);
+      request.write(`{"Tty":true,"Image":"${image}"}`);
       request.end();
     });
   }

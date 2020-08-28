@@ -1,31 +1,30 @@
-module.exports = (name, buildPath, onData, onSuccess, onFailure) => {
+module.exports = function DockerGet (name, buildPath, onData, onSuccess, onFailure) {
 
-  const isSuccessful = (response) => {
+  function isSuccessful (response) {
     return response.complete && (response.statusCode === 200);
   }
 
-  return (RED) => {
+  return function (RED) {
 
     function DockerGetNode (config) {
       const node = this;
+      const docker = RED.nodes.getNode(config.docker);
+      const protocol = require(docker.protocol);
 
       RED.nodes.createNode(this, config);
 
-      node.on('input', (msg) => {
+      node.on('input', function (msg) {
         const path = buildPath(msg, config);
 
-        require(config.protocol).get({
-          hostname: config.hostname,
-          port: config.port,
+        protocol.get({
+          hostname: docker.hostname,
+          port: docker.port,
           path: path
-        }, (response) => {
+        }, function (response) {
+          const onChunk = (typeof onData === 'function') ? onData(node, msg) : function () {};
           response.setEncoding('utf8');
-
-          const onChunk = onData(node, msg);
-
           response.on('data', onChunk);
-
-          response.on('end', () => {
+          response.on('end', function () {
             if (isSuccessful(response)) {
               if (typeof onSuccess === 'function') {
                 onSuccess(msg, node, onChunk.accumulator);

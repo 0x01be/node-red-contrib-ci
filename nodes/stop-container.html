@@ -7,27 +7,16 @@
                 value: undefined,
                 required: false
             },
-            protocol: {
-                value: 'https',
-                required: true,
-                validate: (value) => {
-                    return (value === 'http') || (value === 'https')
-                }
-            },
-            hostname: {
+            docker: {
                 value: undefined,
+                type: "docker-config",
                 required: true
-            },
-            port: {
-                value: undefined,
-                required: true,
-                validate: RED.validators.number()
             }
         },
         inputs: 1,
         outputs: 1,
         icon: 'arrow-in.png',
-        label: () => {
+        label: function () {
             return (this.name && this.name !== '') ? this.name : 'stop';
         }
     });
@@ -40,21 +29,10 @@
     </div>
     <hr>
     <section>
-        <h3>Server</h3>
+        <h3>Stop</h3>
         <div class="form-row">
-            <label for="node-input-protocol"><i class="icon-tag"></i> Protocol</label>
-            <select name="node-input-protocol" id="node-input-protocol">
-                <option value="https">HTTPS</option>
-                <option value="http">HTTP (Unsafe)</option>
-            </select>
-        </div>
-        <div class="form-row">
-            <label for="node-input-hostname"><i class="icon-tag"></i> Hostname</label>
-            <input type="text" id="node-input-hostname" placeholder="host.docker.internal">
-        </div>
-        <div class="form-row">
-            <label for="node-input-port"><i class="icon-tag"></i> Port</label>
-            <input type="number" id="node-input-port" placeholder="1234">
+            <label for="node-input-docker"><i class="icon-tag"></i> Docker</label>
+            <input id="node-input-docker">
         </div>
     </section>
 </script>
@@ -65,14 +43,16 @@
     <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{ Id: 'string' }</pre></code>
+            <code><pre>{ commit: 'string', repository: 'string', image: 'string', container: 'string' }</pre></code>
         </dt>
     </dl>
-    <h3>Output: container</h3>
+    <h3>Output: container or message</h3>
     <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{ Id: 'string' }</pre></code>
+            <code><pre>{ commit: 'string', repository: 'string', image: 'string', container: 'string', time: 'date' }</pre></code>
+            or
+            <code><pre>{ commit: 'string', repository: 'string', image: 'string', message: 'string', time: 'date' }</pre></code>
         </dt>
     </dl>
 </script>

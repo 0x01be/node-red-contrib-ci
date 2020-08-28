@@ -7,6 +7,11 @@
                 value: undefined,
                 required: false
             },
+            docker: {
+                value: undefined,
+                type: "docker-config",
+                required: true
+            },
             follow: {
                 value: false,
                 required: true
@@ -14,28 +19,12 @@
             stderr: {
                 value: false,
                 required: true
-            },
-            protocol: {
-                value: 'https',
-                required: true,
-                validate: (value) => {
-                    return (value === 'http') || (value === 'https');
-                }
-            },
-            hostname: {
-                value: undefined,
-                required: true
-            },
-            port: {
-                value: undefined,
-                required: true,
-                validate: RED.validators.number()
             }
         },
         inputs: 1,
         outputs: 1,
         icon: 'arrow-in.png',
-        label: () => {
+        label: function () {
             return (this.name && (this.name !== '')) ? this.name : 'logs';
         }
     });
@@ -50,31 +39,12 @@
     <section>
         <h3>Logs</h3>
         <div class="form-row">
-            <label for="node-input-follow"><i class="icon-tag"></i> Follow</label>
-            <input type="checkbox" id="node-input-follow">
+            <label for="node-input-docker"><i class="icon-tag"></i> Docker</label>
+            <input id="node-input-docker">
         </div>
         <div class="form-row">
             <label for="node-input-stderr"><i class="icon-tag"></i> Include <code>stderr</code></label>
             <input type="checkbox" id="node-input-stderr">
-        </div>
-    </section>
-    <hr>
-    <section>
-        <h3>Server</h3>
-        <div class="form-row">
-            <label for="node-input-protocol"><i class="icon-tag"></i> Protocol</label>
-            <select name="node-input-protocol" id="node-input-protocol">
-                <option value="https">HTTPS</option>
-                <option value="http">HTTP (Unsafe)</option>
-              </select>
-        </div>
-        <div class="form-row">
-            <label for="node-input-hostname"><i class="icon-tag"></i> Hostname</label>
-            <input type="text" id="node-input-hostname" placeholder="host.docker.internal">
-        </div>
-        <div class="form-row">
-            <label for="node-input-port"><i class="icon-tag"></i> Port</label>
-            <input type="number" id="node-input-port" placeholder="1234">
         </div>
     </section>
 </script>
@@ -85,14 +55,14 @@
     <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{ Id: 'string' }</pre></code>
+            <code><pre>{ commit: 'string', repository: 'string', image: 'string', container: 'string' }</pre></code>
         </dt>
     </dl>
     <h3>Output: stdout stream</h3>
     <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{ stream: 'string' }</pre></code>
+            <code><pre>{ commit: 'string', repository: 'string', image: 'string', container: 'string', stream: 'string', time 'date' }</pre></code>
         </dt>
     </dl>
 </script>

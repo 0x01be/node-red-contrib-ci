@@ -1,29 +1,32 @@
 const GET = require('./common/docker-get');
 
-const buildPath = (msg, config) => {
-  const id = msg.payload.Id;
+const buildPath = function (msg, config) {
   const query = require('querystring').stringify({
     stdout: true,
     stderr: config.stderr,
-    follow: config.follow,
+    follow: true,
     details: false,
     timestamps: false,
     tail: 'all'
   });
 
-  return `/containers/${id}/logs?${query}`;
+  return `/containers/${msg.payload.container}/logs?${query}`;
 }
 
-const onData = (node, msg) => {
+const onData = function (node, msg) {
 
-  const result = (chunk) => {
+  const result = function (chunk) {
     // cf. https://docs.docker.com/engine/api/v1.40/#operation/ContainerAttach
     // If "Tty": false in create-container.js
     // const line = chunk.slice(8);
 
     msg.payload = {
+      commit: msg.payload.commit,
+      repository: msg.payload.repository,
+      image: msg.payload.image,
+      container: msg.payload.container,
       stream: chunk,
-      Id: msg.payload.Id
+      time: new Date()
     };
 
     node.send(msg);

@@ -2,107 +2,9 @@
     {
         "id": "5aabf089.3ea8d",
         "type": "tab",
-        "label": "node-red-docker",
+        "label": "Pipeline",
         "disabled": false,
         "info": ""
-    },
-    {
-        "id": "17c8105a.296008",
-        "type": "ui_base",
-        "theme": {
-            "name": "theme-light",
-            "lightTheme": {
-                "default": "#0094CE",
-                "baseColor": "#0094CE",
-                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
-                "edited": true,
-                "reset": false
-            },
-            "darkTheme": {
-                "default": "#097479",
-                "baseColor": "#097479",
-                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
-                "edited": true,
-                "reset": false
-            },
-            "customTheme": {
-                "name": "Untitled Theme 1",
-                "default": "#4B7930",
-                "baseColor": "#4B7930",
-                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
-                "reset": false
-            },
-            "themeState": {
-                "base-color": {
-                    "default": "#0094CE",
-                    "value": "#0094CE",
-                    "edited": false
-                },
-                "page-titlebar-backgroundColor": {
-                    "value": "#0094CE",
-                    "edited": false
-                },
-                "page-backgroundColor": {
-                    "value": "#fafafa",
-                    "edited": false
-                },
-                "page-sidebar-backgroundColor": {
-                    "value": "#ffffff",
-                    "edited": false
-                },
-                "group-textColor": {
-                    "value": "#1bbfff",
-                    "edited": false
-                },
-                "group-borderColor": {
-                    "value": "#ffffff",
-                    "edited": false
-                },
-                "group-backgroundColor": {
-                    "value": "#ffffff",
-                    "edited": false
-                },
-                "widget-textColor": {
-                    "value": "#111111",
-                    "edited": false
-                },
-                "widget-backgroundColor": {
-                    "value": "#0094ce",
-                    "edited": false
-                },
-                "widget-borderColor": {
-                    "value": "#ffffff",
-                    "edited": false
-                },
-                "base-font": {
-                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
-                }
-            },
-            "angularTheme": {
-                "primary": "indigo",
-                "accents": "blue",
-                "warn": "red",
-                "background": "grey"
-            }
-        },
-        "site": {
-            "name": "Node-RED Dashboard",
-            "hideToolbar": "true",
-            "allowSwipe": "false",
-            "lockMenu": "true",
-            "allowTempTheme": "true",
-            "dateFormat": "DD/MM/YYYY",
-            "sizes": {
-                "sx": 48,
-                "sy": 48,
-                "gx": 6,
-                "gy": 6,
-                "cx": 6,
-                "cy": 6,
-                "px": 0,
-                "py": 0
-            }
-        }
     },
     {
         "id": "6dc3181b.94ee6",
@@ -110,7 +12,7 @@
         "z": "",
         "summary": "",
         "description": "",
-        "tags": "continuous-integration",
+        "tags": "pipeline",
         "consumes": "",
         "produces": "",
         "parameters": [],
@@ -122,46 +24,39 @@
         "deprecated": false
     },
     {
-        "id": "4ceaef4b.d0154",
-        "type": "ui_tab",
+        "id": "45ece1d1.7a3e98",
+        "type": "docker-config",
         "z": "",
-        "name": "CI",
-        "icon": "dashboard",
-        "disabled": false,
-        "hidden": false
+        "protocol": "http",
+        "hostname": "docker",
+        "port": "1234"
     },
     {
-        "id": "957cca54.366a48",
-        "type": "ui_group",
+        "id": "56a66bde.68bccc",
+        "type": "elasticsearch-config",
         "z": "",
-        "name": "node-red-docker",
-        "tab": "4ceaef4b.d0154",
-        "order": 1,
-        "disp": true,
-        "width": "14",
-        "collapse": false
+        "index": "events",
+        "protocol": "http",
+        "hostname": "elasticsearch",
+        "port": 9200
     },
     {
         "id": "190d4eb1.a0ea49",
         "type": "build-image",
         "z": "5aabf089.3ea8d",
         "name": "",
+        "docker": "45ece1d1.7a3e98",
         "remote": "",
         "nocache": false,
         "pull": false,
-        "protocol": "http",
-        "hostname": "host.docker.internal",
-        "port": "1234",
-        "x": 470,
+        "x": 490,
         "y": 140,
         "wires": [
             [
-                "d8025478.3647",
-                "9dc4cf95.0aa2a8"
+                "d8025478.3647"
             ],
             [
-                "44600677.74c75",
-                "4cbc1912.678c98"
+                "8e555fcb.3bc618"
             ]
         ]
     },
@@ -170,18 +65,12 @@
         "type": "create-container",
         "z": "5aabf089.3ea8d",
         "name": "",
-        "image": "",
-        "pull": false,
-        "protocol": "http",
-        "hostname": "host.docker.internal",
-        "port": "1234",
-        "x": 250,
+        "docker": "45ece1d1.7a3e98",
+        "x": 330,
         "y": 60,
         "wires": [
             [
-                "e9a2cea.9387eb",
-                "4beb05f3.09e684",
-                "8e20b0b4.8b60d8"
+                "80f83fd8.4c705"
             ]
         ]
     },
@@ -190,15 +79,13 @@
         "type": "start-container",
         "z": "5aabf089.3ea8d",
         "name": "",
-        "protocol": "http",
-        "hostname": "host.docker.internal",
-        "port": "1234",
-        "x": 170,
-        "y": 320,
+        "docker": "45ece1d1.7a3e98",
+        "x": 330,
+        "y": 360,
         "wires": [
             [
                 "2be013cb.8e7f6c",
-                "ea6c5d88.37e83"
+                "98782112.ace9c8"
             ]
         ]
     },
@@ -207,30 +94,17 @@
         "type": "read-logs",
         "z": "5aabf089.3ea8d",
         "name": "",
+        "docker": "45ece1d1.7a3e98",
         "follow": true,
         "stderr": true,
-        "protocol": "http",
-        "hostname": "host.docker.internal",
-        "port": "1234",
         "x": 330,
-        "y": 320,
+        "y": 280,
         "wires": [
             [
-                "44600677.74c75",
                 "9cbcfbb3.fd7fc",
-                "4cbc1912.678c98"
+                "8e555fcb.3bc618"
             ]
         ]
-    },
-    {
-        "id": "26d0769c.0ad7ca",
-        "type": "comment",
-        "z": "5aabf089.3ea8d",
-        "name": "Welcome",
-        "info": "## Dashboard\n\n[/dashboard](/dashboard)\n\n## Dockerfile\n\n```\nFROM 0x01be/node-red-docker\n\nRUN echo \"Nothing to build...\"\n```\n\n## Build webhook\n\n`[POST] http://localhost:1880/build`",
-        "x": 100,
-        "y": 520,
-        "wires": []
     },
     {
         "id": "d60da5d0.b9d66",
@@ -241,127 +115,46 @@
         "method": "post",
         "upload": false,
         "swaggerDoc": "6dc3181b.94ee6",
-        "x": 110,
-        "y": 140,
+        "x": 130,
+        "y": 200,
         "wires": [
             [
-                "95d30de2.1c07b",
-                "67a711b1.6be8b8",
-                "aaf24401.7d2a48"
+                "45d9d91e.c2e128",
+                "67a711b1.6be8b8"
             ]
         ]
-    },
-    {
-        "id": "95d30de2.1c07b",
-        "type": "function",
-        "z": "5aabf089.3ea8d",
-        "name": "remote",
-        "func": "const url = msg.payload.commits[0].url.replace('commit', 'raw');\n\nnode.send({\n    payload: {\n        remote:`${url}/Dockerfile`\n    }\n});",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 300,
-        "y": 140,
-        "wires": [
-            [
-                "190d4eb1.a0ea49"
-            ]
-        ]
-    },
-    {
-        "id": "44600677.74c75",
-        "type": "debug",
-        "z": "5aabf089.3ea8d",
-        "name": "stream",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload.stream",
-        "targetType": "msg",
-        "x": 490,
-        "y": 320,
-        "wires": []
     },
     {
         "id": "9cbcfbb3.fd7fc",
         "type": "function",
         "z": "5aabf089.3ea8d",
-        "name": "Assert server started",
-        "func": "const expected = 'Starting flows';\n\nconst success = (typeof msg.payload.stream === 'string')\n                && msg.payload.stream.includes(expected);\n\nif (success) {\n    node.send({\n        payload: {\n            success: success,\n            Id: msg.payload.Id\n        }\n    });\n}",
+        "name": "Node-RED started",
+        "func": "const expected = 'Started flows';\n\nconst success = (typeof msg.payload.stream === 'string')\n                && msg.payload.stream.includes(expected);\n\nif (success) {\n    node.send(msg);\n}",
         "outputs": 1,
         "noerr": 0,
-        "x": 200,
-        "y": 440,
+        "initialize": "",
+        "finalize": "",
+        "x": 150,
+        "y": 420,
         "wires": [
             [
-                "31ec1937.9df13e",
-                "859abcbc.f05f2",
-                "8e20b0b4.8b60d8"
+                "859abcbc.f05f2"
             ]
         ]
-    },
-    {
-        "id": "31ec1937.9df13e",
-        "type": "debug",
-        "z": "5aabf089.3ea8d",
-        "name": "success",
-        "active": true,
-        "tosidebar": false,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload.success",
-        "targetType": "msg",
-        "x": 480,
-        "y": 460,
-        "wires": []
     },
     {
         "id": "859abcbc.f05f2",
         "type": "stop-container",
         "z": "5aabf089.3ea8d",
         "name": "",
-        "protocol": "http",
-        "hostname": "host.docker.internal",
-        "port": "1234",
-        "x": 390,
-        "y": 380,
+        "docker": "45ece1d1.7a3e98",
+        "x": 330,
+        "y": 420,
         "wires": [
             [
-                "ea6c5d88.37e83"
+                "98782112.ace9c8"
             ]
         ]
-    },
-    {
-        "id": "ea6c5d88.37e83",
-        "type": "inspect-container",
-        "z": "5aabf089.3ea8d",
-        "name": "",
-        "protocol": "http",
-        "hostname": "host.docker.internal",
-        "port": "1234",
-        "x": 320,
-        "y": 520,
-        "wires": [
-            [
-                "440cb4cc.dfba74",
-                "a74686d9.b2e02"
-            ]
-        ]
-    },
-    {
-        "id": "440cb4cc.dfba74",
-        "type": "debug",
-        "z": "5aabf089.3ea8d",
-        "name": "status",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload.State.Status",
-        "targetType": "msg",
-        "x": 490,
-        "y": 560,
-        "wires": []
     },
     {
         "id": "67a711b1.6be8b8",
@@ -370,104 +163,93 @@
         "name": "created",
         "statusCode": "201",
         "headers": {},
-        "x": 300,
+        "x": 320,
         "y": 200,
         "wires": []
     },
     {
-        "id": "aaf24401.7d2a48",
-        "type": "ui_text",
+        "id": "8e555fcb.3bc618",
+        "type": "function",
         "z": "5aabf089.3ea8d",
-        "group": "957cca54.366a48",
-        "order": 1,
-        "width": "0",
-        "height": "0",
-        "name": "",
-        "label": "Commit",
-        "format": "{{msg.payload.after}}",
-        "layout": "row-left",
-        "x": 120,
-        "y": 200,
-        "wires": []
-    },
-    {
-        "id": "9dc4cf95.0aa2a8",
-        "type": "ui_text",
-        "z": "5aabf089.3ea8d",
-        "group": "957cca54.366a48",
-        "order": 2,
-        "width": "0",
-        "height": "0",
-        "name": "",
-        "label": "Image",
-        "format": "{{msg.payload.Id}}",
-        "layout": "row-left",
-        "x": 510,
-        "y": 60,
-        "wires": []
-    },
-    {
-        "id": "4beb05f3.09e684",
-        "type": "ui_text",
-        "z": "5aabf089.3ea8d",
-        "group": "957cca54.366a48",
-        "order": 3,
-        "width": "0",
-        "height": "0",
-        "name": "",
-        "label": "Container",
-        "format": "{{msg.payload.Id}}",
-        "layout": "row-left",
+        "name": "cleanup",
+        "func": "if (msg.payload.stream) {\n    msg.payload.stream = msg.payload.stream.replace('\\r\\n','').trim();\n    \n    const regexp = /[0-9]{2} [A-Z][a-z][a-z] [0-9]{2}:[0-9]{2}:[0-9]{2} - /;\n    \n    if (regexp.test(msg.payload.stream)) {\n        msg.payload.stream = msg.payload.stream.substring(18).trim();\n        node.send(msg);\n    } else if (msg.payload.stream !== \"\") {\n        node.send(msg);\n    }\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
         "x": 500,
-        "y": 200,
-        "wires": []
-    },
-    {
-        "id": "a74686d9.b2e02",
-        "type": "ui_text",
-        "z": "5aabf089.3ea8d",
-        "group": "957cca54.366a48",
-        "order": 4,
-        "width": "0",
-        "height": "0",
-        "name": "",
-        "label": "Status",
-        "format": "{{msg.payload.State.Status}}",
-        "layout": "row-left",
-        "x": 490,
-        "y": 520,
-        "wires": []
-    },
-    {
-        "id": "8e20b0b4.8b60d8",
-        "type": "ui_text",
-        "z": "5aabf089.3ea8d",
-        "group": "957cca54.366a48",
-        "order": 6,
-        "width": "0",
-        "height": "0",
-        "name": "",
-        "label": "Success",
-        "format": "{{msg.payload.success}}",
-        "layout": "row-left",
-        "x": 480,
-        "y": 420,
-        "wires": []
-    },
-    {
-        "id": "4cbc1912.678c98",
-        "type": "ui_text",
-        "z": "5aabf089.3ea8d",
-        "group": "957cca54.366a48",
-        "order": 5,
-        "width": 0,
-        "height": 0,
-        "name": "",
-        "label": "stdout",
-        "format": "{{msg.payload.stream}}",
-        "layout": "row-left",
-        "x": 490,
         "y": 280,
+        "wires": [
+            [
+                "1a89a7dc.89848"
+            ]
+        ]
+    },
+    {
+        "id": "45d9d91e.c2e128",
+        "type": "function",
+        "z": "5aabf089.3ea8d",
+        "name": "commit",
+        "func": "const commit = msg.payload.commits[0].id;\nconst repository = msg.payload.repository.clone_url;\nconst url = msg.payload.commits[0].url.replace('commit', 'raw');\nconst remote = `${url}/Dockerfile`;\n\nmsg.payload = {\n    commit: commit,\n    repository: repository,\n    remote: remote,\n    time: new Date()\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 320,
+        "y": 140,
+        "wires": [
+            [
+                "190d4eb1.a0ea49"
+            ]
+        ]
+    },
+    {
+        "id": "80f83fd8.4c705",
+        "type": "inspect-container",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "docker": "45ece1d1.7a3e98",
+        "x": 500,
+        "y": 60,
+        "wires": [
+            [
+                "e9a2cea.9387eb",
+                "1a89a7dc.89848"
+            ]
+        ]
+    },
+    {
+        "id": "98782112.ace9c8",
+        "type": "inspect-container",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "docker": "45ece1d1.7a3e98",
+        "x": 500,
+        "y": 360,
+        "wires": [
+            [
+                "1a89a7dc.89848"
+            ]
+        ]
+    },
+    {
+        "id": "1a89a7dc.89848",
+        "type": "persist-event",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "elasticsearch": "56a66bde.68bccc",
+        "x": 680,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "63c68c7f.1fb604",
+        "type": "comment",
+        "z": "5aabf089.3ea8d",
+        "name": "Welcome",
+        "info": "Wecome to your pipeline!",
+        "x": 120,
+        "y": 60,
         "wires": []
     }
 ]

@@ -1,0 +1,49 @@
+<script type="text/javascript">
+    RED.nodes.registerType('persist-event', {
+        category: 'function',
+        color: '#ffaaaa',
+        defaults: {
+          name: {
+            value: undefined,
+            required: false
+          },
+          elasticsearch: {
+            value: undefined,
+            type: "elasticsearch-config",
+            required: true
+          },
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: 'arrow-in.png',
+        label: function () {
+            return (this.name && (this.name !== '')) ? this.name : 'event';
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="persist-event">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Persist">
+    </div>
+    <hr>
+    <section>
+      <h3>Persist</h3>
+      <div class="form-row">
+          <label for="node-input-elasticsearch"><i class="icon-tag"></i> Elasticsearch</label>
+          <input id="node-input-elasticsearch">
+      </div>
+  </section>
+</script>
+
+<script type="text/html" data-help-name="persist-event">
+    <p>Index an event in elasticsearch</p>
+    <h3>Input: event</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type"> object</span>
+            <code><pre>{ commit: 'string', repository: 'string', ..., time: 'date' }</pre></code>
+        </dt>
+    </dl>
+</script>
