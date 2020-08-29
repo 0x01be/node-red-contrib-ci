@@ -22,7 +22,7 @@
             validate: function (value) {
               const ip = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
               const hostname = /^[a-z\d]([a-z\d\-]{0,61}[a-z\d])?(\.[a-z\d]([a-z\d\-]{0,61}[a-z\d])?)*$/;
-              
+
               return ip.test(value) || hostname.test(value);
             }
           },
@@ -34,7 +34,7 @@
         },
         icon: 'arrow-in.png',
         label: function () {
-          return this.hostname + ':' + this.port + '[' + this.index + ']';
+          return this.hostname + ':' + this.port + ' [' + this.index + ']';
         }
     });
 </script>
