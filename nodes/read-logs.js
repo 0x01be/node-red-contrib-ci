@@ -17,19 +17,17 @@ const onData = function (node, msg) {
 
   const result = function (chunk) {
     // cf. https://docs.docker.com/engine/api/v1.40/#operation/ContainerAttach
-    // If "Tty": false in create-container.js
-    // const line = chunk.slice(8);
-
-    msg.payload = {
-      commit: msg.payload.commit,
-      repository: msg.payload.repository,
-      image: msg.payload.image,
-      container: msg.payload.container,
-      stream: chunk,
-      time: new Date()
-    };
-
-    node.send(msg);
+    // If "Tty": false in create-container.js => chunk.slice(8);
+    node.send({
+      payload: {
+        commit: msg.payload.commit,
+        repository: msg.payload.repository,
+        image: msg.payload.image,
+        container: msg.payload.container,
+        stream: chunk,
+        time: new Date()
+      }
+    });
   };
 
   return result;

@@ -1,0 +1,75 @@
+<script type="text/javascript">
+    RED.nodes.registerType('extract-files', {
+        category: 'function',
+        color: '#ffaaaa',
+        defaults: {
+            name: {
+                value: undefined,
+                required: false
+            },
+            docker: {
+                value: undefined,
+                type: "docker-config",
+                required: true
+            },
+            container: {
+                value: undefined,
+                required: false
+            },
+            path: {
+                value: undefined,
+                required: false,
+                validate: function (value) {
+                    return value === '' || /[^\0]+/.test(value);
+                }
+            },
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'arrow-in.png',
+        label: function () {
+            return (this.name && this.name !== '') ? this.name : (this.image ? this.image : 'extract');
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="extract-files">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Create">
+    </div>
+    <hr>
+    <section>
+        <h3>Extract</h3>
+        <div class="form-row">
+            <label for="node-input-docker"><i class="icon-tag"></i> Docker</label>
+            <input id="node-input-docker">
+        </div>
+        <div class="form-row">
+            <label for="node-input-container"><i class="icon-tag"></i> Container</label>
+            <input type="text" id="node-input-container">
+        </div>
+        <div class="form-row">
+            <label for="node-input-path"><i class="icon-tag"></i> Path</label>
+            <input type="text" id="node-input-path" placeholder="/data">
+        </div>
+    </section>
+</script>
+
+<script type="text/html" data-help-name="extract-files">
+    <p>Extract files from a docker container</p>
+    <h3>Input: container</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type"> object</span>
+            <code><pre>{ commit: 'string', repository: 'string', image: 'string', container: 'string', path: 'string' }</pre></code>
+        </dt>
+    </dl>
+    <h3>Output: tar archive</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type"> object</span>
+            <code><pre>{ commit: 'string', repository: 'string', image: 'string', container: 'string', tar: 'string' }</pre></code>
+        </dt>
+    </dl>
+</script>

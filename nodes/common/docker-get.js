@@ -21,7 +21,8 @@ module.exports = function DockerGet (name, buildPath, onData, onSuccess, onFailu
           port: docker.port,
           path: path
         }, function (response) {
-          const onChunk = (typeof onData === 'function') ? onData(node, msg) : function () {};
+          const onChunk = onData(node, msg);
+          
           response.setEncoding('utf8');
           response.on('data', onChunk);
           response.on('end', function () {

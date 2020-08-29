@@ -15,8 +15,9 @@
       "start-container": "nodes/start-container.js",
       "inspect-container": "nodes/inspect-container.js",
       "read-logs": "nodes/read-logs.js",
+      "extract-files": "nodes/extract-files.js",
       "elasticsearch-config": "nodes/elasticsearch-config.js",
-      "persist-event": "nodes/persist-event.js"
+      "index-event": "nodes/index-event.js"
     }
   },
   "dependencies": {

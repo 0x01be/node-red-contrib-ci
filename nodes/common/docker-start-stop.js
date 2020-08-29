@@ -32,28 +32,18 @@ module.exports = function DockerStartStop (RED, operation)  {
           const success = response.complete && (response.statusCode === 204);
           
           if (success) {
-            msg.payload = {
-              commit: msg.payload.commit,
-              repository: msg.payload.repository,
-              image: msg.payload.image,
-              container: msg.payload.container,
-              time: new Date()
-            };
+            node.send({
+              payload: {
+                commit: msg.payload.commit,
+                repository: msg.payload.repository,
+                image: msg.payload.image,
+                container: msg.payload.container,
+                info: message,
+                time: new Date()
+            }});
           } else {
-            const commit = msg.payload.commit;
-            const repository = msg.payload.repository;
-            const image = msg.payload.image;
-            const container = msg.payload.container;
-            
-            msg.payload = message;
-            msg.payload.commit = commit;
-            msg.payload.repository = repository;
-            msg.payload.image = image;
-            msg.payload.container = container;
-            msg.payload.time = new Date();
+            node.error(JSON.stringify(message, null, 2));
           }
-
-          node.send(msg);
         });
       });
 

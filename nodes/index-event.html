@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('persist-event', {
+    RED.nodes.registerType('index-event', {
         category: 'function',
         color: '#ffaaaa',
         defaults: {
@@ -17,15 +17,15 @@
         outputs: 0,
         icon: 'arrow-in.png',
         label: function () {
-            return (this.name && (this.name !== '')) ? this.name : 'event';
+            return (this.name && (this.name !== '')) ? this.name : 'index';
         }
     });
 </script>
 
-<script type="text/html" data-template-name="persist-event">
+<script type="text/html" data-template-name="index-event">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Persist">
+        <input type="text" id="node-input-name" placeholder="Index">
     </div>
     <hr>
     <section>
@@ -37,7 +37,7 @@
   </section>
 </script>
 
-<script type="text/html" data-help-name="persist-event">
+<script type="text/html" data-help-name="index-event">
     <p>Index an event in elasticsearch</p>
     <h3>Input: event</h3>
     <dl class="message-properties">

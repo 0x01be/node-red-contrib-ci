@@ -24,38 +24,29 @@ module.exports = function (RED) {
       }, function (response) {
         response.setEncoding('utf8');
 
-        let container = undefined;
         let message = undefined;
 
         response.on('data', function (chunk) {
           if ((typeof chunk === 'string') && chunk !== '') {
-            try {
-              message = JSON.parse(chunk);
-              message.commit = msg.payload.commit;
-              message.repository = msg.payload.repository;
-              message.image = msg.payload.image;
-              message.time = new Date();
-
-              if ((typeof message.Id === 'string') && message.Id !== '') {
-                container = {
-                  commit: message.commit,
-                  repository: message.repository,
-                  image: message.image,
-                  container: message.Id,
-                  time: message.time
-                };
-              }
-            } catch (_) {}
+            try { message = JSON.parse(chunk); } catch (_) {}
           }
         });
 
         response.on('end', function () {
           const success = response.complete && (response.statusCode === 201) 
-                        && container && (typeof container.container === 'string') && container.container !== '';
-
-          msg.payload = success ? container : message;
-
-          node.send(msg);
+                        && message && (typeof message.Id === 'string') && (message.Id !== '');
+          
+          if (success) {
+            node.send({
+              payload: {
+                commit: msg.payload.commit,
+                repository: msg.payload.repository,
+                image: msg.payload.image,
+                container: message.Id,
+                time: new Date()
+              }
+            });
+          }
         });
       });
 

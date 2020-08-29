@@ -56,14 +56,14 @@ module.exports = function (RED) {
   
               // Status messages are ignored
               if (message.stream) {
-                msg.payload = {
-                  commit: msg.payload.commit,
-                  repository: msg.payload.repository,
-                  stream: message.stream,
-                  time: new Date()
-                };
-
-                node.send([null, msg]);
+                node.send([null, {
+                  payload: {
+                    commit: msg.payload.commit,
+                    repository: msg.payload.repository,
+                    image: result,
+                    stream: message.stream,
+                    time: new Date()
+                }}]);
               }
             } catch (_) {}
           }
@@ -71,14 +71,13 @@ module.exports = function (RED) {
 
         response.on('end', function () {
           if (isSuccessful(response, result)) {
-            msg.payload = {
-              commit: msg.payload.commit,
-              repository: msg.payload.repository,
-              image: result,
-              time: new Date()
-            };
-
-            node.send([msg, null]);
+            node.send([{
+              payload: {
+                commit: msg.payload.commit,
+                repository: msg.payload.repository,
+                image: result,
+                time: new Date()
+            }}, null]);
           }
         });
       });

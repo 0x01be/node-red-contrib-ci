@@ -96,7 +96,7 @@
         "name": "",
         "docker": "45ece1d1.7a3e98",
         "follow": true,
-        "stderr": true,
+        "stderr": false,
         "x": 330,
         "y": 280,
         "wires": [
@@ -128,7 +128,7 @@
         "id": "9cbcfbb3.fd7fc",
         "type": "function",
         "z": "5aabf089.3ea8d",
-        "name": "Node-RED started",
+        "name": "Node-RED ✓",
         "func": "const expected = 'Started flows';\n\nconst success = (typeof msg.payload.stream === 'string')\n                && msg.payload.stream.includes(expected);\n\nif (success) {\n    node.send(msg);\n}",
         "outputs": 1,
         "noerr": 0,
@@ -152,7 +152,7 @@
         "y": 420,
         "wires": [
             [
-                "98782112.ace9c8"
+                "f14e231c.203698"
             ]
         ]
     },
@@ -181,7 +181,7 @@
         "y": 280,
         "wires": [
             [
-                "1a89a7dc.89848"
+                "e300e4ff.6b4cd8"
             ]
         ]
     },
@@ -214,7 +214,7 @@
         "wires": [
             [
                 "e9a2cea.9387eb",
-                "1a89a7dc.89848"
+                "e300e4ff.6b4cd8"
             ]
         ]
     },
@@ -228,19 +228,9 @@
         "y": 360,
         "wires": [
             [
-                "1a89a7dc.89848"
+                "e300e4ff.6b4cd8"
             ]
         ]
-    },
-    {
-        "id": "1a89a7dc.89848",
-        "type": "persist-event",
-        "z": "5aabf089.3ea8d",
-        "name": "",
-        "elasticsearch": "56a66bde.68bccc",
-        "x": 680,
-        "y": 240,
-        "wires": []
     },
     {
         "id": "63c68c7f.1fb604",
@@ -251,5 +241,29 @@
         "x": 120,
         "y": 60,
         "wires": []
+    },
+    {
+        "id": "e300e4ff.6b4cd8",
+        "type": "index-event",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "elasticsearch": "56a66bde.68bccc",
+        "x": 670,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "f14e231c.203698",
+        "type": "inspect-container",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "docker": "45ece1d1.7a3e98",
+        "x": 500,
+        "y": 420,
+        "wires": [
+            [
+                "e300e4ff.6b4cd8"
+            ]
+        ]
     }
 ]

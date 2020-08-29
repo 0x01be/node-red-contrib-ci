@@ -18,23 +18,21 @@ module.exports = function (RED) {
             }
           }
         }, { ignore: [400] });
+
         elasticsearch.client.index({
           index: elasticsearch.index,
           op_type: 'create',
           refresh: true,
-          body: {
-            event: msg.payload
-          }
+          body: { event: msg.payload }
         }, function (error, result) {
-          if (error) {
-            node.log(error);
-          }
+          if (error) node.error(JSON.stringify(error));
+          if (result) node.trace(JSON.stringify(result));
         });
       }
       
-      run().catch(node.log)
+      run().catch(node.error)
     });
   }
 
-  RED.nodes.registerType('persist-event', ElasticsearchIndexNode);
+  RED.nodes.registerType('index-event', ElasticsearchIndexNode);
 };
