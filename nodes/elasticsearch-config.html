@@ -6,7 +6,7 @@
             value: 'events',
             required: true,
             validate: function (value) {
-              return /[a-z]*/.test(value);
+              return /^[a-z]+\-?[0-9]{0,4}\-?[0-9]{0,2}\-?[0-9]{0,2}$/.test(value);
             }
           },
           protocol: {

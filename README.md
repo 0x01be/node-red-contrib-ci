@@ -10,15 +10,15 @@
 
 | Component     | URL |
 | ------------- | --- |
-| Editor        | http://localhost:1880/edit |
+| Pipeline      | http://localhost:1880/edit |
 | Git           | http://localhost:3000/ |
 | Dashboard     | http://localhost:5601/ |
 
 ### Start elasticsearch and kibana for indexing and dashboarding
 
 ```
-docker run --name elasticsearch -d -p 127.0.0.1:9200:9200 -p 127.0.0.1:9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.9.0
-docker run --name kibana -d -p 127.0.0.1:5601:5601 --link elasticsearch:elasticsearch docker.elastic.co/kibana/kibana:7.9.0
+docker run --name es -d -p 127.0.0.1:9200:9200 -p 127.0.0.1:9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.9.0
+docker run --name kibana -d -p 127.0.0.1:5601:5601 --link es:elasticsearch docker.elastic.co/kibana/kibana:7.9.0
 ```
 
 ### Expose the docker unix socket on port 2375 if necessary
@@ -27,7 +27,7 @@ docker run --name kibana -d -p 127.0.0.1:5601:5601 --link elasticsearch:elastics
 
 ### Start Node-RED
 
-`docker run --name ci -d -v $(pwd):/data -p 127.0.0.1:1880:1880 --link docker:docker --link elasticsearch:elasticsearch 0x01be/node-red-docker`
+`docker run --name ci -d -v $(pwd):/data -p 127.0.0.1:1880:1880 --link docker:docker --link es:elasticsearch 0x01be/node-red-docker`
 
 ### Start Gitea
 
