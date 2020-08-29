@@ -1,5 +1,3 @@
 module.exports = function (RED) {
-  const StartContainerNode = require('./common/docker-start-stop')(RED, 'start');
-
-  RED.nodes.registerType('start-container', StartContainerNode);
+  RED.nodes.registerType('start-container', require('./common/docker-start-stop')(RED, 'start'));
 }

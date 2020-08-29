@@ -8,6 +8,12 @@
 
 ## Use
 
+| Component     | URL |
+| ------------- | --- |
+| Editor        | http://localhost:1880/edit |
+| Git           | http://localhost:3000/ |
+| Dashboard     | http://localhost:5601/ |
+
 ### Start elasticsearch and kibana for indexing and dashboarding
 
 ```
@@ -26,9 +32,3 @@ docker run --name kibana -d -p 127.0.0.1:5601:5601 --link elasticsearch:elastics
 ### Start Gitea
 
 `docker run  --name git -v $(pwd)/gitea:/data -p 127.0.0.1:3000:3000 --link ci:ci gitea/gitea`
-
-| Component     | URL |
-| ------------- | --- |
-| Editor        | http://localhost:1880/edit |
-| Git           | http://localhost:3000/ |
-| Dashboard     | http://localhost:5601/ |
