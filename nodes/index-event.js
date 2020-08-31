@@ -6,6 +6,8 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config);
 
     node.on('input', function (msg) {
+      if (!msg.payload.time) msg.payload.time = new Date();
+      
       async function run () {
         await elasticsearch.client.indices.create({
           index: elasticsearch.index,

@@ -27,9 +27,7 @@ module.exports = function DockerGet (name, buildPath, onData, onSuccess, onFailu
           response.on('data', onChunk);
           response.on('end', function () {
             if (isSuccessful(response)) {
-              if (typeof onSuccess === 'function') {
-                onSuccess(msg, node, onChunk.accumulator);
-              }
+              if (typeof onSuccess === 'function') onSuccess(msg, node, onChunk.accumulator);
             } else if (typeof onFailure === 'function') {
               onFailure(msg, node, onChunk.accumulator);
             }

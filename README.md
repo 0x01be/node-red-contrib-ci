@@ -1,6 +1,6 @@
 # node-red-docker
 
-![screenshot](./screenshot.png)
+![screenshot](https://github.com/0x01be/node-red-docker/raw/main/screenshot.png)
 
 - Build images
 - Create, start, stop and inspect containers
@@ -14,6 +14,8 @@
 | Git           | http://localhost:3000/ |
 | Dashboard     | http://localhost:5601/ |
 
+## Get started
+
 ### Start elasticsearch and kibana for indexing and dashboarding
 
 ```
@@ -23,7 +25,7 @@ docker run --name kibana -d -p 127.0.0.1:5601:5601 --link es:elasticsearch docke
 
 ### Expose the docker unix socket on port 2375 if necessary
 
-`docker run --name docker -d --restart always -v /var/run/docker.sock:/var/run/docker.sock -p 2375:2375 -e PORT=2375 dimdm/simple-docker-proxy`
+`docker run --name docker -d --restart always -v /var/run/docker.sock:/var/run/docker.sock -p 127.0.0.1:2375:2375 -e PORT=2375 dimdm/simple-docker-proxy`
 
 ### Start Node-RED
 
