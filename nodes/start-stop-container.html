@@ -1,11 +1,18 @@
 <script type="text/javascript">
-    RED.nodes.registerType('stop-container', {
-        category: 'function',
+    RED.nodes.registerType('start-stop-container', {
+        category: 'ci',
         color: '#ffaaaa',
         defaults: {
             name: {
                 value: undefined,
                 required: false
+            },
+            operation: {
+                value: undefined,
+                required: true,
+                validate: function (value) {
+                    return value === 'start' || value === 'stop';
+                }
             },
             docker: {
                 value: undefined,
@@ -17,28 +24,34 @@
         outputs: 1,
         icon: 'arrow-in.png',
         label: function () {
-            return (this.name && this.name !== '') ? this.name : 'stop';
+            return (this.name && this.name !== '') ? this.name : this.operation;
         }
     });
 </script>
 
-<script type="text/html" data-template-name="stop-container">
+<script type="text/html" data-template-name="start-stop-container">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Stop">
+        <input type="text" id="node-input-name" placeholder="Start">
     </div>
     <hr>
     <section>
-        <h3>Stop</h3>
         <div class="form-row">
             <label for="node-input-docker"><i class="icon-tag"></i> Docker</label>
             <input id="node-input-docker">
         </div>
+        <div class="form-row">
+            <label for="node-input-operation"><i class="icon-tag"></i> Operation</label>
+            <select name="node-input-operation" id="node-input-operation">
+                <option value="start">Start</option>
+                <option value="stop">Stop</option>
+            </select>
+        </div>
     </section>
 </script>
 
-<script type="text/html" data-help-name="stop-container">
-    <p>Stop a docker container</p>
+<script type="text/html" data-help-name="start-stop-container">
+    <p>Start or stop a docker container</p>
     <h3>Input: container</h3>
     <dl class="message-properties">
         <dt>payload

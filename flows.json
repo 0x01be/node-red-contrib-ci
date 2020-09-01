@@ -49,8 +49,8 @@
         "remote": "",
         "nocache": false,
         "pull": false,
-        "x": 490,
-        "y": 140,
+        "x": 470,
+        "y": 60,
         "wires": [
             [
                 "d8025478.3647"
@@ -66,26 +66,11 @@
         "z": "5aabf089.3ea8d",
         "name": "",
         "docker": "45ece1d1.7a3e98",
-        "x": 330,
-        "y": 60,
+        "x": 470,
+        "y": 120,
         "wires": [
             [
-                "80f83fd8.4c705"
-            ]
-        ]
-    },
-    {
-        "id": "e9a2cea.9387eb",
-        "type": "start-container",
-        "z": "5aabf089.3ea8d",
-        "name": "",
-        "docker": "45ece1d1.7a3e98",
-        "x": 330,
-        "y": 360,
-        "wires": [
-            [
-                "2be013cb.8e7f6c",
-                "98782112.ace9c8"
+                "31a17023.1a6488"
             ]
         ]
     },
@@ -97,8 +82,8 @@
         "docker": "45ece1d1.7a3e98",
         "follow": true,
         "stderr": false,
-        "x": 330,
-        "y": 280,
+        "x": 310,
+        "y": 260,
         "wires": [
             [
                 "9cbcfbb3.fd7fc",
@@ -115,8 +100,8 @@
         "method": "post",
         "upload": false,
         "swaggerDoc": "6dc3181b.94ee6",
-        "x": 130,
-        "y": 200,
+        "x": 110,
+        "y": 120,
         "wires": [
             [
                 "45d9d91e.c2e128",
@@ -134,25 +119,11 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 150,
-        "y": 420,
+        "x": 130,
+        "y": 340,
         "wires": [
             [
-                "859abcbc.f05f2"
-            ]
-        ]
-    },
-    {
-        "id": "859abcbc.f05f2",
-        "type": "stop-container",
-        "z": "5aabf089.3ea8d",
-        "name": "",
-        "docker": "45ece1d1.7a3e98",
-        "x": 330,
-        "y": 420,
-        "wires": [
-            [
-                "f14e231c.203698"
+                "e7d85b49.d5e818"
             ]
         ]
     },
@@ -163,8 +134,8 @@
         "name": "created",
         "statusCode": "201",
         "headers": {},
-        "x": 320,
-        "y": 200,
+        "x": 280,
+        "y": 120,
         "wires": []
     },
     {
@@ -177,8 +148,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 500,
-        "y": 280,
+        "x": 540,
+        "y": 260,
         "wires": [
             [
                 "e300e4ff.6b4cd8"
@@ -190,13 +161,13 @@
         "type": "function",
         "z": "5aabf089.3ea8d",
         "name": "commit",
-        "func": "const commit = msg.payload.commits[0].id;\nconst repository = msg.payload.repository.clone_url;\nconst url = msg.payload.commits[0].url.replace('commit', 'raw');\nconst remote = `${url}/Dockerfile`;\n\nmsg.payload = {\n    commit: commit,\n    repository: repository,\n    remote: remote,\n    time: new Date()\n};\nreturn msg;",
+        "func": "const commit = msg.payload.commits[0].id;\nconst repository = msg.payload.repository.clone_url;\nconst url = msg.payload.commits[0].url.replace('commit', 'raw');\nconst remote = `${url}/Dockerfile`;\n\nmsg.payload = {\n    commit: commit.substring(0, 15),\n    repository: repository,\n    remote: remote,\n    time: new Date()\n};\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 320,
-        "y": 140,
+        "x": 300,
+        "y": 60,
         "wires": [
             [
                 "190d4eb1.a0ea49"
@@ -204,66 +175,55 @@
         ]
     },
     {
-        "id": "80f83fd8.4c705",
-        "type": "inspect-container",
-        "z": "5aabf089.3ea8d",
-        "name": "",
-        "docker": "45ece1d1.7a3e98",
-        "x": 500,
-        "y": 60,
-        "wires": [
-            [
-                "e9a2cea.9387eb",
-                "e300e4ff.6b4cd8"
-            ]
-        ]
-    },
-    {
-        "id": "98782112.ace9c8",
-        "type": "inspect-container",
-        "z": "5aabf089.3ea8d",
-        "name": "",
-        "docker": "45ece1d1.7a3e98",
-        "x": 500,
-        "y": 360,
-        "wires": [
-            [
-                "e300e4ff.6b4cd8"
-            ]
-        ]
-    },
-    {
-        "id": "63c68c7f.1fb604",
-        "type": "comment",
-        "z": "5aabf089.3ea8d",
-        "name": "Welcome",
-        "info": "Wecome to your pipeline!",
-        "x": 120,
-        "y": 60,
-        "wires": []
-    },
-    {
         "id": "e300e4ff.6b4cd8",
         "type": "index-event",
         "z": "5aabf089.3ea8d",
         "name": "",
         "elasticsearch": "56a66bde.68bccc",
-        "x": 670,
-        "y": 220,
+        "x": 570,
+        "y": 200,
         "wires": []
     },
     {
-        "id": "f14e231c.203698",
-        "type": "inspect-container",
+        "id": "31a17023.1a6488",
+        "type": "start-stop-container",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "operation": "start",
+        "docker": "45ece1d1.7a3e98",
+        "x": 310,
+        "y": 200,
+        "wires": [
+            [
+                "2be013cb.8e7f6c"
+            ]
+        ]
+    },
+    {
+        "id": "e7d85b49.d5e818",
+        "type": "start-stop-container",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "operation": "stop",
+        "docker": "45ece1d1.7a3e98",
+        "x": 310,
+        "y": 340,
+        "wires": [
+            [
+                "d3e07a27.fac058"
+            ]
+        ]
+    },
+    {
+        "id": "d3e07a27.fac058",
+        "type": "remove-container",
         "z": "5aabf089.3ea8d",
         "name": "",
         "docker": "45ece1d1.7a3e98",
-        "x": 500,
-        "y": 420,
+        "x": 540,
+        "y": 340,
         "wires": [
-            [
-                "e300e4ff.6b4cd8"
-            ]
+            []
         ]
     }
 ]

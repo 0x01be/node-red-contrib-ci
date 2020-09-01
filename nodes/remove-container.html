@@ -1,6 +1,6 @@
 <script type="text/javascript">
-    RED.nodes.registerType('start-container', {
-        category: 'function',
+    RED.nodes.registerType('remove-container', {
+        category: 'ci',
         color: '#ffaaaa',
         defaults: {
             name: {
@@ -11,48 +11,53 @@
                 value: undefined,
                 type: "docker-config",
                 required: true
+            },
+            force: {
+                value: false,
+                required: true
             }
         },
         inputs: 1,
         outputs: 1,
         icon: 'arrow-in.png',
         label: function () {
-            return (this.name && this.name !== '') ? this.name : 'start';
+            return (this.name && this.name !== '') ? this.name : (this.image ? this.image : 'remove');
         }
     });
 </script>
 
-<script type="text/html" data-template-name="start-container">
+<script type="text/html" data-template-name="remove-container">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Start">
+        <input type="text" id="node-input-name" placeholder="Remove">
     </div>
     <hr>
     <section>
-        <h3>Start</h3>
         <div class="form-row">
             <label for="node-input-docker"><i class="icon-tag"></i> Docker</label>
             <input id="node-input-docker">
         </div>
+        <div class="form-row">
+            <label for="node-input-force"><i class="icon-tag"></i> Force</label>
+            <input type="checkbox" id="node-input-force">
+        </div>
     </section>
 </script>
 
-<script type="text/html" data-help-name="start-container">
-    <p>Start a docker container</p>
+<script type="text/html" data-help-name="remove-container">
+    <p>Remove a docker container</p>
     <h3>Input: container</h3>
     <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{ commit: 'string', repository: 'string', image: 'string', container: 'string' }</pre></code>
+            <code><pre>{ commit: 'string', repository: 'string', image: 'string', container: 'string', v: 'boolean', force: 'boolean', link: 'boolean' }</pre></code>
         </dt>
     </dl>
-    <h3>Output: container or message</h3>
+    <h3>Output: a message</h3>
     <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{ commit: 'string', repository: 'string', image: 'string', container: 'string', time: 'date' }</pre></code>
-            or
-            <code><pre>{ commit: 'string', repository: 'string', image: 'string', message: 'string', time: 'date' }</pre></code>
+            <code><pre>{ commit: 'string', repository: 'string', image: 'string', container: 'string', success: 'boolean', time: 'date' }</pre></code>
         </dt>
     </dl>
 </script>

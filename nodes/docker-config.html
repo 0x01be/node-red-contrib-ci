@@ -1,6 +1,7 @@
 <script type="text/javascript">
     RED.nodes.registerType('docker-config', {
         category: 'config',
+        color: '#ffaaaa',
         defaults: {
           protocol: {
             value: 'http',
@@ -37,7 +38,7 @@
       <option value="http">HTTP</option>
       <option value="https">HTTPS</option>
     </select>
-</div>
+  </div>
   <div class="form-row">
       <label for="node-config-input-hostname"><i class="icon-tag"></i> Hostname</label>
       <input type="text" id="node-config-input-hostname" placeholder="docker">

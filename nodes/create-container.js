@@ -28,21 +28,21 @@ module.exports = function (RED) {
 
         response.on('data', function (chunk) {
           if ((typeof chunk === 'string') && chunk !== '') {
-            try { message = JSON.parse(chunk); } catch (_) {}
+            try { message = JSON.parse(chunk) } catch (_) {}
           }
         });
 
         response.on('end', function () {
           const success = response.complete && (response.statusCode === 201) 
                         && message && (typeof message.Id === 'string') && (message.Id !== '');
-          
+                        
           if (success) {
             node.send({
               payload: {
                 commit: msg.payload.commit,
                 repository: msg.payload.repository,
                 image: msg.payload.image,
-                container: message.Id,
+                container: message.Id.substring(0, 15),
                 time: new Date()
               }
             });
@@ -50,7 +50,7 @@ module.exports = function (RED) {
         });
       });
 
-      const image = ((typeof msg.payload.image === 'string') && msg.payload.image !== '') ? msg.payload.image : config.image;
+      const image = ((typeof msg.payload.image === 'string') && msg.payload.image !== '') ? msg.payload.image : '';
 
       request.write(`{"Tty":true,"Image":"${image}"}`);
       request.end();

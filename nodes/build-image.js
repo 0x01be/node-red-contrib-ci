@@ -60,7 +60,7 @@ module.exports = function (RED) {
                   payload: {
                     commit: msg.payload.commit,
                     repository: msg.payload.repository,
-                    image: result,
+                    image: result.substring(0, 15),
                     stream: message.stream,
                     time: new Date()
                 }}]);
@@ -75,7 +75,7 @@ module.exports = function (RED) {
               payload: {
                 commit: msg.payload.commit,
                 repository: msg.payload.repository,
-                image: result,
+                image: result.substring(0, 15),
                 time: new Date()
             }}, null]);
           }

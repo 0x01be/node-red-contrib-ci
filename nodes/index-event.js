@@ -26,9 +26,6 @@ module.exports = function (RED) {
           op_type: 'create',
           refresh: true,
           body: { event: msg.payload }
-        }, function (error, result) {
-          if (error) node.error(JSON.stringify(error));
-          if (result) node.trace(JSON.stringify(result));
         });
       }
       

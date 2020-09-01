@@ -1,33 +1,33 @@
-module.exports = function DockerStartStop (RED, operation)  {
-  if (operation !== 'start' && operation !== 'stop') return function () {};
+module.exports = function (RED) {
 
-  return function (config) {
+  const buildPath = function (msg, config) {
+    const container = msg.payload.container;
+    const v = Boolean(msg.payload.v || config.v);
+    const force = Boolean(msg.payload.force || config.force);
+    const link = Boolean(msg.payload.link || config.link);
+    const query = require('querystring').stringify({
+      v: v,
+      force: force,
+      link: link
+    });
+
+    return `/containers/${container}?${query}`;
+  }
+
+   function RemoveContainerNode (config) {
     const node = this;
     const docker = RED.nodes.getNode(config.docker);
 
     RED.nodes.createNode(this, config);
 
     node.on('input', function (msg) {
-      const path = `/containers/${msg.payload.container}/${operation}`;
-      
       const request = require(docker.protocol).request({
         hostname: docker.hostname,
         port: docker.port,
-        path: path,
-        method: 'POST'
+        path: buildPath(msg, config),
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
       }, function (response) {
-        response.setEncoding('utf8');
-
-        let message = undefined;
-
-        response.on('data', function (chunk) {
-          if ((typeof chunk === 'string') && chunk !== '') {
-            try {
-              message = JSON.parse(chunk);
-            } catch (_) {}
-          }
-        });
-
         response.on('end', function () {
           const success = response.complete && (response.statusCode === 204);
           
@@ -38,11 +38,10 @@ module.exports = function DockerStartStop (RED, operation)  {
                 repository: msg.payload.repository,
                 image: msg.payload.image,
                 container: msg.payload.container,
-                info: message,
+                success: success,
                 time: new Date()
-            }});
-          } else {
-            node.error(JSON.stringify(message, null, 2));
+              }
+            });
           }
         });
       });
@@ -50,4 +49,6 @@ module.exports = function DockerStartStop (RED, operation)  {
       request.end();
     });
   }
+
+  RED.nodes.registerType('remove-container', RemoveContainerNode);
 }
