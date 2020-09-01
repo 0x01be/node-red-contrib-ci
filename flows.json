@@ -48,7 +48,7 @@
         "docker": "45ece1d1.7a3e98",
         "remote": "",
         "nocache": false,
-        "pull": true,
+        "pull": false,
         "x": 470,
         "y": 60,
         "wires": [
