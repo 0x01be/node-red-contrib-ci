@@ -48,7 +48,7 @@
         "docker": "45ece1d1.7a3e98",
         "remote": "",
         "nocache": false,
-        "pull": false,
+        "pull": true,
         "x": 470,
         "y": 60,
         "wires": [
@@ -56,7 +56,7 @@
                 "d8025478.3647"
             ],
             [
-                "8e555fcb.3bc618"
+                "e300e4ff.6b4cd8"
             ]
         ]
     },
@@ -148,7 +148,7 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 540,
+        "x": 480,
         "y": 260,
         "wires": [
             [
@@ -180,7 +180,7 @@
         "z": "5aabf089.3ea8d",
         "name": "",
         "elasticsearch": "56a66bde.68bccc",
-        "x": 570,
+        "x": 630,
         "y": 200,
         "wires": []
     },
@@ -220,7 +220,7 @@
         "z": "5aabf089.3ea8d",
         "name": "",
         "docker": "45ece1d1.7a3e98",
-        "x": 540,
+        "x": 480,
         "y": 340,
         "wires": [
             []

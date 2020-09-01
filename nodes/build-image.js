@@ -46,27 +46,27 @@ module.exports = function (RED) {
         let result = undefined;
 
         response.on('data', function (chunk) {
-          if (chunk && chunk !== '') {
-            try {
-              const message = JSON.parse(chunk);
+          try {
+            const message = JSON.parse(chunk);
 
-              if (message.aux && (typeof message.aux.ID === 'string') && message.aux.ID.startsWith('sha256:')) {
-                result = message.aux.ID.slice(7);
-              }
-  
-              // Status messages are ignored
-              if (message.stream) {
-                node.send([null, {
-                  payload: {
-                    commit: msg.payload.commit,
-                    repository: msg.payload.repository,
-                    image: result.substring(0, 15),
-                    stream: message.stream,
-                    time: new Date()
-                }}]);
-              }
-            } catch (_) {}
-          }
+            if (message.aux 
+                && (typeof message.aux.ID === 'string') 
+                && message.aux.ID.startsWith('sha256:')) {
+              result = message.aux.ID.slice(7);
+            }
+
+            // Status messages are ignored
+            if (message.stream) {
+              node.send([null, {
+                payload: {
+                  commit: msg.payload.commit,
+                  repository: msg.payload.repository,
+                  image: result && result.substring(0, 15),
+                  stream: message.stream,
+                  time: new Date()
+              }}]);
+            }
+          } catch (_) {}
         });
 
         response.on('end', function () {
