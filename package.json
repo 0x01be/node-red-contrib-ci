@@ -1,11 +1,12 @@
 {
   "name": "node-red-contrib-ci",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "The good parts of Docker on Node RED",
   "keywords": [
     "continuous",
     "integration",
-    "CI"
+    "CI",
+    "CD"
   ],
   "node-red": {
     "nodes": {
@@ -13,7 +14,6 @@
       "build-image": "nodes/build-image.js",
       "create-container": "nodes/create-container.js",
       "start-stop-container": "nodes/start-stop-container.js",
-      "export-container": "nodes/export-container.js",
       "remove-container": "nodes/remove-container.js",
       "inspect-container": "nodes/inspect-container.js",
       "read-logs": "nodes/read-logs.js",
