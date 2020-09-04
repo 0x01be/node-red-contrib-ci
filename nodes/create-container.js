@@ -24,11 +24,17 @@ module.exports = function (RED) {
       }, function (response) {
         response.setEncoding('utf8');
 
+        response.on('error', node.error);
+
         let message = undefined;
 
         response.on('data', function (chunk) {
           if ((typeof chunk === 'string') && chunk !== '') {
-            try { message = JSON.parse(chunk) } catch (_) {}
+            try {
+              message = JSON.parse(chunk)
+            } catch (error) {
+              node.error(error);
+            }
           }
         });
 
@@ -37,14 +43,13 @@ module.exports = function (RED) {
                         && message && (typeof message.Id === 'string') && (message.Id !== '');
                         
           if (success) {
+            const payload = Object.assign({}, msg.payload);
+            payload.container = message.Id.substring(0, 12);
+            payload.time = new Date();
+
             node.send({
-              payload: {
-                commit: msg.payload.commit,
-                repository: msg.payload.repository,
-                image: msg.payload.image,
-                container: message.Id.substring(0, 15),
-                time: new Date()
-              }
+              _msgid: msg._msgid,
+              payload: payload
             });
           }
         });

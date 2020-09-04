@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('remove-container', {
+    RED.nodes.registerType('container-stats', {
         category: 'ci',
         color: '#ffaaaa',
         defaults: {
@@ -12,24 +12,24 @@
                 type: "docker-config",
                 required: true
             },
-            force: {
-                value: false,
+            stream: {
+                value: true,
                 required: true
-            }
+            },
         },
         inputs: 1,
-        outputs: 0,
+        outputs: 1,
         icon: 'arrow-in.png',
         label: function () {
-            return (this.name && this.name !== '') ? this.name : (this.image ? this.image : 'remove');
+            return (this.name && (this.name !== '')) ? this.name : 'stats';
         }
     });
 </script>
 
-<script type="text/html" data-template-name="remove-container">
+<script type="text/html" data-template-name="container-stats">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Remove">
+        <input type="text" id="node-input-name" placeholder="Stats">
     </div>
     <hr>
     <section>
@@ -38,26 +38,28 @@
             <input id="node-input-docker">
         </div>
         <div class="form-row">
-            <label for="node-input-force"><i class="icon-tag"></i> Force</label>
-            <input type="checkbox" id="node-input-force">
+            <label for="node-input-stream"><i class="icon-tag"></i> Stream</label>
+            <input type="checkbox" id="node-input-stream">
         </div>
     </section>
 </script>
 
-<script type="text/html" data-help-name="remove-container">
-    <p>Remove a docker container</p>
+<script type="text/html" data-help-name="container-stats">
+    <p>Get stats for a docker container</p>
     <h3>Input: container</h3>
     <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{ commit: 'string', repository: 'string', image: 'string', container: 'string', v: 'boolean', force: 'boolean', link: 'boolean' }</pre></code>
+            <code><pre>{ commit: 'string', repository: 'string', image: 'string', container: 'string' }</pre></code>
         </dt>
     </dl>
-    <h3>Output: a message</h3>
+    <h3>Output: result</h3>
     <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{ commit: 'string', repository: 'string', image: 'string', container: 'string', success: 'boolean', time: 'date' }</pre></code>
+            <code><pre>{ commit: 'string', repository: 'string', image: 'string', container: 'string', stats: 'object', computed: 'object', time: 'date' }</pre></code>
         </dt>
     </dl>
+    <p><em>computed</em> memory properties are expressed in MB or %</p>
+    <p><em>computed</em> cpu properties are expressed in CPU counters or %</p>
 </script>

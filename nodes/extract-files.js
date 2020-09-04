@@ -20,15 +20,14 @@ const onData = function () {
 };
 
 const onSuccess = function (msg, node, data) {
+  const payload = Object.assign({}, msg.payload);
+  payload.tar = data;
+  payload.time = new Date();
+
   node.send({
-    payload: {
-      commit: msg.payload.commit,
-      repository: msg.payload.repository,
-      image: msg.payload.image,
-      container: msg.payload.container,
-      tar: data,
-      time: new Date()
-  }});
+    _msgid: msg._msgid,
+    payload: payload
+  });
 };
 
 module.exports = GET('extract-files', buildPath, onData, onSuccess);

@@ -41,43 +41,55 @@ module.exports = function (RED) {
           'Content-Length': 0
         }
       }, function (response) {
+        let previousTime = new Date();
+
         response.setEncoding('utf8');
+
+        response.on('error', node.error);
 
         let result = undefined;
 
         response.on('data', function (chunk) {
+          // TODO FIX!!
+          // Needed to avoid identical timestamps on consecutive events
+          let newTime = new Date();
+          while (previousTime.getTime() === newTime.getTime()) newTime = new Date();
+          previousTime = newTime;
+
           try {
             const message = JSON.parse(chunk);
 
-            if (message.aux 
-                && (typeof message.aux.ID === 'string') 
-                && message.aux.ID.startsWith('sha256:')) {
+            if (message.aux && (typeof message.aux.ID === 'string') && message.aux.ID.startsWith('sha256:')) {
               result = message.aux.ID.slice(7);
             }
 
             // Status messages are ignored
             if (message.stream) {
+              const payload = Object.assign({}, msg.payload);
+              payload.image = result && result.substring(0, 12);
+              payload.stream = message.stream;
+              payload.time = newTime;
+
               node.send([null, {
-                payload: {
-                  commit: msg.payload.commit,
-                  repository: msg.payload.repository,
-                  image: result && result.substring(0, 15),
-                  stream: message.stream,
-                  time: new Date()
-              }}]);
+                _msgid: msg._msgid,
+                payload: payload
+              }]);
             }
-          } catch (_) {}
+          } catch (error) {
+            node.error(error);
+          }
         });
 
         response.on('end', function () {
           if (isSuccessful(response, result)) {
+            const payload = Object.assign({}, msg.payload);
+            payload.image = result && result.substring(0, 12);
+            payload.time = new Date();
+
             node.send([{
-              payload: {
-                commit: msg.payload.commit,
-                repository: msg.payload.repository,
-                image: result.substring(0, 15),
-                time: new Date()
-            }}, null]);
+              _msgid: msg._msgid,
+              payload: payload
+            }, null]);
           }
         });
       });

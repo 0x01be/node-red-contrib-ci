@@ -14,19 +14,24 @@ const buildPath = function (msg, config) {
 }
 
 const onData = function (node, msg) {
+  let previousTime = new Date();
 
   const result = function (chunk) {
+    // TODO FIX!!
+    // Needed to avoid identical timestamps on consecutive events
+    let newTime = new Date();
+    while (previousTime.getTime() === newTime.getTime()) newTime = new Date();
+    previousTime = newTime;
+
+    const payload = Object.assign({}, msg.payload);
+    payload.stream = chunk;
+    payload.time = newTime;
+
     // cf. https://docs.docker.com/engine/api/v1.40/#operation/ContainerAttach
     // If "Tty": false in create-container.js => chunk.slice(8);
     node.send({
-      payload: {
-        commit: msg.payload.commit,
-        repository: msg.payload.repository,
-        image: msg.payload.image,
-        container: msg.payload.container,
-        stream: chunk,
-        time: new Date()
-      }
+      _msgid: msg._msgid,
+      payload: payload
     });
   };
 

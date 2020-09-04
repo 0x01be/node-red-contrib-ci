@@ -7,6 +7,8 @@ module.exports = function (RED) {
 
     node.on('input', function (msg) {
       if (!msg.payload.time) msg.payload.time = new Date();
+      if (!msg.payload.build) msg.payload.build = msg._msgid;
+
       
       async function run () {
         await elasticsearch.client.indices.create({
@@ -26,6 +28,8 @@ module.exports = function (RED) {
           op_type: 'create',
           refresh: true,
           body: { event: msg.payload }
+        }, function (error) {
+          if (error) node.error(error);
         });
       }
       

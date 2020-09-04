@@ -17,22 +17,21 @@ module.exports = function (RED) {
       }, function (response) {
         response.setEncoding('utf8');
 
-        response.on('data', function (chunk) {
-          node.debug(chunk);
-        });
+        response.on('error', node.error);
+
+        response.on('data',  node.debug);
 
         response.on('end', function () {
           const success = response.complete && (response.statusCode === 204);
           
           if (success) {
+            const payload = Object.assign({}, msg.payload);
+            payload.time = new Date();
+
             node.send({
-              payload: {
-                commit: msg.payload.commit,
-                repository: msg.payload.repository,
-                image: msg.payload.image,
-                container: msg.payload.container,
-                time: new Date()
-            }});
+              _msgid: msg._msgid,
+              payload: payload
+            });
           }
         });
       });

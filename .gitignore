@@ -2,6 +2,8 @@
 .config.json.backup
 .flows.json.backup
 flows_cred.json
+flows.json
+settings.js
 node_modules
 .DS_Store
 gogs

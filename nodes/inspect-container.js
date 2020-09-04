@@ -20,15 +20,14 @@ const onData = function () {
 };
 
 const onSuccess = function (msg, node, data) {
+  const payload = Object.assign({}, msg.payload);
+  payload.info = JSON.parse(data);
+  payload.time = new Date();
+
   node.send({
-    payload: {
-      commit: msg.payload.commit,
-      repository: msg.payload.repository,
-      image: msg.payload.image,
-      container: msg.payload.container,
-      info: JSON.parse(data),
-      time: new Date()
-  }});
+    _msgid: msg._msgid,
+    payload: payload
+  });
 };
 
 module.exports = GET('inspect-container', buildPath, onData, onSuccess);

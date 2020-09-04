@@ -1,0 +1,320 @@
+[
+    {
+        "id": "5aabf089.3ea8d",
+        "type": "tab",
+        "label": "Pipeline",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "6dc3181b.94ee6",
+        "type": "swagger-doc",
+        "z": "",
+        "summary": "",
+        "description": "",
+        "tags": "pipeline",
+        "consumes": "",
+        "produces": "",
+        "parameters": [
+            {
+                "name": "payload",
+                "in": "body",
+                "required": true,
+                "schema": {
+                    "type": "object"
+                }
+            }
+        ],
+        "responses": {
+            "201": {
+                "description": "Created"
+            }
+        },
+        "deprecated": false
+    },
+    {
+        "id": "45ece1d1.7a3e98",
+        "type": "docker-config",
+        "z": "",
+        "protocol": "http",
+        "hostname": "docker",
+        "port": "2375"
+    },
+    {
+        "id": "56a66bde.68bccc",
+        "type": "elasticsearch-config",
+        "z": "",
+        "index": "events",
+        "protocol": "http",
+        "hostname": "elasticsearch",
+        "port": 9200
+    },
+    {
+        "id": "190d4eb1.a0ea49",
+        "type": "build-image",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "docker": "45ece1d1.7a3e98",
+        "remote": "",
+        "nocache": false,
+        "pull": false,
+        "x": 190,
+        "y": 180,
+        "wires": [
+            [
+                "d8025478.3647"
+            ],
+            [
+                "8e555fcb.3bc618"
+            ]
+        ]
+    },
+    {
+        "id": "d8025478.3647",
+        "type": "create-container",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "docker": "45ece1d1.7a3e98",
+        "x": 190,
+        "y": 240,
+        "wires": [
+            [
+                "31a17023.1a6488"
+            ]
+        ]
+    },
+    {
+        "id": "2be013cb.8e7f6c",
+        "type": "read-logs",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "docker": "45ece1d1.7a3e98",
+        "follow": true,
+        "stderr": false,
+        "x": 190,
+        "y": 360,
+        "wires": [
+            [
+                "9cbcfbb3.fd7fc",
+                "8e555fcb.3bc618"
+            ]
+        ]
+    },
+    {
+        "id": "d60da5d0.b9d66",
+        "type": "http in",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "url": "/build",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "6dc3181b.94ee6",
+        "x": 90,
+        "y": 40,
+        "wires": [
+            [
+                "45d9d91e.c2e128"
+            ]
+        ]
+    },
+    {
+        "id": "9cbcfbb3.fd7fc",
+        "type": "function",
+        "z": "5aabf089.3ea8d",
+        "name": "started ✓",
+        "func": "const expected = 'Started flows';\n\nconst success = (typeof msg.payload.stream === 'string')\n                && msg.payload.stream.includes(expected);\n\nif (success) {\n    node.send({\n        _msgid: msg._msgid,\n        paths: { started: true },\n        payload: { container: msg.payload.container }\n    });\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 180,
+        "y": 420,
+        "wires": [
+            [
+                "a8fcba53.7c01",
+                "115f8f46.f54131"
+            ]
+        ]
+    },
+    {
+        "id": "8e555fcb.3bc618",
+        "type": "function",
+        "z": "5aabf089.3ea8d",
+        "name": "clean",
+        "func": "if (msg.payload.stream) {\n    msg.payload.stream = msg.payload.stream.replace('\\r\\n','').trim();\n    \n    const regexp = /[0-9]{1,2} [A-Z][a-z][a-z] [0-9]{2}:[0-9]{2}:[0-9]{2} - /;\n    \n    if (regexp.test(msg.payload.stream)) {\n        msg.payload.stream = msg.payload.stream.replace(regexp,'').trim();\n        \n        node.send(msg);\n    } else if (msg.payload.stream !== \"\") {\n        node.send(msg);\n    }\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 370,
+        "y": 186,
+        "wires": [
+            [
+                "e300e4ff.6b4cd8"
+            ]
+        ]
+    },
+    {
+        "id": "45d9d91e.c2e128",
+        "type": "function",
+        "z": "5aabf089.3ea8d",
+        "name": "commit",
+        "func": "const commit = msg.payload.commits[0].id;\nconst repository = msg.payload.repository.clone_url;\nconst url = msg.payload.commits[0].url.replace('commit', 'raw');\nconst remote = `${url}/Dockerfile`;\n\nconst payload = {\n    commit: commit.substring(0, 12),\n    repository: repository,\n    remote: remote,\n    time: new Date(),\n    build: msg._msgid,\n};\n\nmsg.payload = payload;\n\nnode.send(msg);",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 120,
+        "wires": [
+            [
+                "190d4eb1.a0ea49",
+                "67a711b1.6be8b8"
+            ]
+        ]
+    },
+    {
+        "id": "e300e4ff.6b4cd8",
+        "type": "index-event",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "elasticsearch": "56a66bde.68bccc",
+        "x": 530,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "31a17023.1a6488",
+        "type": "start-stop-container",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "operation": "start",
+        "docker": "45ece1d1.7a3e98",
+        "x": 190,
+        "y": 300,
+        "wires": [
+            [
+                "2be013cb.8e7f6c",
+                "a56ee7ed.7fb61"
+            ]
+        ]
+    },
+    {
+        "id": "e7d85b49.d5e818",
+        "type": "start-stop-container",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "operation": "stop",
+        "docker": "45ece1d1.7a3e98",
+        "x": 370,
+        "y": 520,
+        "wires": [
+            [
+                "d3e07a27.fac058"
+            ]
+        ]
+    },
+    {
+        "id": "d3e07a27.fac058",
+        "type": "remove-container",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "docker": "45ece1d1.7a3e98",
+        "x": 520,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "a56ee7ed.7fb61",
+        "type": "container-stats",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "docker": "45ece1d1.7a3e98",
+        "stream": true,
+        "x": 370,
+        "y": 300,
+        "wires": [
+            [
+                "e300e4ff.6b4cd8"
+            ]
+        ]
+    },
+    {
+        "id": "a8fcba53.7c01",
+        "type": "wait-paths",
+        "z": "5aabf089.3ea8d",
+        "name": "started & idle ✓",
+        "paths": "[\"started\",\"idle\"]",
+        "timeout": "20000",
+        "finalTimeout": "20000",
+        "x": 400,
+        "y": 460,
+        "wires": [
+            [
+                "e7d85b49.d5e818"
+            ]
+        ]
+    },
+    {
+        "id": "16f21f60.0fa601",
+        "type": "function",
+        "z": "5aabf089.3ea8d",
+        "name": "idle ✓",
+        "func": "if (msg.payload.computed\n    && msg.payload.computed.cpu\n    && msg.payload.computed.cpu.percent\n    && Math.trunc(msg.payload.computed.cpu.percent) < 1) {\n    node.send({\n        _msgid: msg._msgid,\n        paths: { idle: true },\n        payload: { container: msg.payload.container }\n    });\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 510,
+        "y": 380,
+        "wires": [
+            [
+                "a2151e97.f00ce8"
+            ]
+        ]
+    },
+    {
+        "id": "a2151e97.f00ce8",
+        "type": "rbe",
+        "z": "5aabf089.3ea8d",
+        "name": "once",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "property": "payload.container",
+        "x": 650,
+        "y": 380,
+        "wires": [
+            [
+                "a8fcba53.7c01"
+            ]
+        ]
+    },
+    {
+        "id": "115f8f46.f54131",
+        "type": "container-stats",
+        "z": "5aabf089.3ea8d",
+        "name": "",
+        "docker": "45ece1d1.7a3e98",
+        "stream": true,
+        "x": 370,
+        "y": 380,
+        "wires": [
+            [
+                "16f21f60.0fa601"
+            ]
+        ]
+    },
+    {
+        "id": "67a711b1.6be8b8",
+        "type": "http response",
+        "z": "5aabf089.3ea8d",
+        "name": "created",
+        "statusCode": "201",
+        "headers": {},
+        "x": 300,
+        "y": 40,
+        "wires": []
+    }
+]

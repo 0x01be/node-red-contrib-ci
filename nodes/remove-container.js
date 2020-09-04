@@ -28,22 +28,7 @@ module.exports = function (RED) {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' }
       }, function (response) {
-        response.on('end', function () {
-          const success = response.complete && (response.statusCode === 204);
-          
-          if (success) {
-            node.send({
-              payload: {
-                commit: msg.payload.commit,
-                repository: msg.payload.repository,
-                image: msg.payload.image,
-                container: msg.payload.container,
-                success: success,
-                time: new Date()
-              }
-            });
-          }
-        });
+        response.on('error', node.error);
       });
 
       request.end();
