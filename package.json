@@ -16,6 +16,7 @@
       "export-container": "nodes/export-container.js",
       "remove-container": "nodes/remove-container.js",
       "inspect-container": "nodes/inspect-container.js",
+      "container-stats": "nodes/container-stats.js",
       "read-logs": "nodes/read-logs.js",
       "container-stats": "nodes/container-stats.js",
       "extract-files": "nodes/extract-files.js",
