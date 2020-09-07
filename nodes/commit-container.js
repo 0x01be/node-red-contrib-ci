@@ -1,21 +1,23 @@
 module.exports = function (RED) {
 
-  const buildPath = function (msg) {
-    const query = ((typeof msg.payload.image === 'string') && msg.payload.image !== '') ? require('querystring').stringify({
-      name: undefined
+  const buildPath = function (msg, config) {
+    const query = ((typeof msg.payload.container === 'string') && msg.payload.container !== '') ? require('querystring').stringify({
+      container: msg.payload.container,
+      repo: msg.payload.repo || config.repo,
+      tag: msg.payload.tag || config.tag
     }) : '';
 
-    return `/containers/create?${query}`;
+    return `/commit?${query}`;
   }
 
-  function CreateContainerNode (config) {
+  function CommitContainerNode (config) {
     const node = this;
     const docker = RED.nodes.getNode(config.docker);
 
     RED.nodes.createNode(this, config);
 
     node.on('input', function (msg) {
-      const path = buildPath(msg);
+      const path = buildPath(msg, config);
 
       const request = require(docker.protocol).request({
         hostname: docker.hostname,
@@ -50,10 +52,12 @@ module.exports = function (RED) {
                           && message
                           && (typeof message.Id === 'string')
                           && message.Id !== '';
-                        
+
           if (success) {
             const payload = Object.assign({}, msg.payload);
-            payload.container = message.Id.substring(0, 12);
+            payload.image = message.Id.slice(7).substring(0, 12);
+            payload.repo = payload.repo || config.repo;
+            payload.tag = payload.tag || config.tag;
             payload.time = new Date();
 
             node.send({
@@ -67,27 +71,10 @@ module.exports = function (RED) {
         });
       });
 
-      const image = ((typeof msg.payload.image === 'string') && msg.payload.image !== '')
-                    ? msg.payload.image
-                    : '';
-
-      const Binds = [];
-      if (config.workspace
-          && msg.payload.workspace
-          && msg.payload.workspace.Name) {
-        Binds.push(`${msg.payload.workspace.Name}:${config.workspace}:rw,z`);
-      }
-
-      request.write(JSON.stringify({
-        Tty: true,
-        Image: image,
-        HostConfig: {
-          Binds: Binds
-        }
-      }));
+      request.write(JSON.stringify({}));
       request.end();
     });
   }
 
-  RED.nodes.registerType('create-container', CreateContainerNode);
+  RED.nodes.registerType('commit-container', CommitContainerNode);
 }

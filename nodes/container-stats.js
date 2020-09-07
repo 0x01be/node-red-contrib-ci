@@ -10,20 +10,21 @@ const buildPath = function (msg, config) {
 
 const onData = function (node, msg) {
   const result = function (chunk) {
+    node.trace(chunk);
+
     try { 
       const payload = Object.assign({}, msg.payload);
+      payload.workspace = undefined;
       payload.time = new Date();
       
       payload.stats = JSON.parse(chunk);
 
-      const computed = {
-        memory: {},
-        cpu: {}
-      };
+      const computed = {};
 
       // See https://docs.docker.com/engine/api/v1.40/#operation/ContainerStats
       const memory_stats = payload.stats.memory_stats;
       if (memory_stats) {
+        computed.memory = {};
         if (memory_stats.limit) {
           computed.memory.available = memory_stats.limit / (1024*1024);
         }
@@ -39,6 +40,7 @@ const onData = function (node, msg) {
       const cpu_stats = payload.stats.cpu_stats;
       const precpu_stats = payload.stats.precpu_stats;
       if (cpu_stats && cpu_stats.cpu_usage && precpu_stats && precpu_stats.cpu_usage) {
+        computed.cpu = {};
         if (cpu_stats.cpu_usage.total_usage && precpu_stats.cpu_usage.total_usage) {
           computed.cpu.delta = cpu_stats.cpu_usage.total_usage - precpu_stats.cpu_usage.total_usage;
         }

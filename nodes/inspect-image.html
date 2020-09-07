@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('container-stats', {
+    RED.nodes.registerType('inspect-image', {
         category: 'ci',
         color: '#ffaaaa',
         defaults: {
@@ -11,25 +11,21 @@
                 value: undefined,
                 type: "docker-config",
                 required: true
-            },
-            stream: {
-                value: true,
-                required: true
-            },
+            }
         },
         inputs: 1,
         outputs: 1,
         icon: 'arrow-in.png',
         label: function () {
-            return (this.name && (this.name !== '')) ? this.name : 'stats';
+            return (this.name && (this.name !== '')) ? this.name : 'image';
         }
     });
 </script>
 
-<script type="text/html" data-template-name="container-stats">
+<script type="text/html" data-template-name="inspect-image">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Stats">
+        <input type="text" id="node-input-name" placeholder="Inspect">
     </div>
     <hr>
     <section>
@@ -37,29 +33,23 @@
             <label for="node-input-docker"><i class="icon-tag"></i> Docker</label>
             <input id="node-input-docker">
         </div>
-        <div class="form-row">
-            <label for="node-input-stream"><i class="icon-tag"></i> Stream</label>
-            <input type="checkbox" id="node-input-stream">
-        </div>
     </section>
 </script>
 
-<script type="text/html" data-help-name="container-stats">
-    <p>Get stats for a docker container</p>
-    <h3>Input: container</h3>
+<script type="text/html" data-help-name="inspect-image">
+    <p>Inspect a docker image</p>
+    <h3>Input: image</h3>
     <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{ container: 'string' }</pre></code>
+            <code><pre>{ image: 'string' }</pre></code>
         </dt>
     </dl>
     <h3>Output: result</h3>
     <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{ container: 'string', stats: 'object', computed: 'object', time: 'date' }</pre></code>
+            <code><pre>{ image: 'string', image_info: 'object' time: 'date' }</pre></code>
         </dt>
     </dl>
-    <p><em>computed</em> memory properties are expressed in MB or %</p>
-    <p><em>computed</em> cpu properties are expressed in CPU counters or %</p>
 </script>

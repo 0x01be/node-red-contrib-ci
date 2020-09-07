@@ -31,10 +31,12 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config);
 
     node.on('input', function (msg) {
+      const path = buildPath(msg, config);
+
       const request = require(docker.protocol).request({
         hostname: docker.hostname,
         port: docker.port,
-        path: buildPath(msg, config),
+        path: path,
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-tar',
@@ -47,9 +49,14 @@ module.exports = function (RED) {
 
         response.on('error', node.error);
 
+        let output = "";
         let result = undefined;
 
         response.on('data', function (chunk) {
+          node.trace(chunk);
+
+          output += chunk;
+
           // TODO FIX!!
           // Needed to avoid identical timestamps on consecutive events
           let newTime = new Date();
@@ -68,6 +75,7 @@ module.exports = function (RED) {
               const payload = Object.assign({}, msg.payload);
               payload.image = result && result.substring(0, 12);
               payload.stream = message.stream;
+              payload.workspace = undefined;
               payload.time = newTime;
 
               node.send([null, {
@@ -81,7 +89,9 @@ module.exports = function (RED) {
         });
 
         response.on('end', function () {
-          if (isSuccessful(response, result)) {
+          const success = isSuccessful(response, result);
+
+          if (success) {
             const payload = Object.assign({}, msg.payload);
             payload.image = result && result.substring(0, 12);
             payload.time = new Date();
@@ -90,6 +100,9 @@ module.exports = function (RED) {
               _msgid: msg._msgid,
               payload: payload
             }, null]);
+          } else {
+            node.error(`${path} [${response.statusCode}]`);
+            node.error(output);
           }
         });
       });

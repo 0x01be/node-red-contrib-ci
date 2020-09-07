@@ -21,7 +21,7 @@ const onData = function () {
 
 const onSuccess = function (msg, node, data) {
   const payload = Object.assign({}, msg.payload);
-  payload.info = JSON.parse(data);
+  payload.container_info = JSON.parse(data);
   payload.time = new Date();
 
   node.send({
@@ -30,4 +30,8 @@ const onSuccess = function (msg, node, data) {
   });
 };
 
-module.exports = GET('inspect-container', buildPath, onData, onSuccess);
+const onFailure = function (msg, node, data) {
+  node.error(data);
+};
+
+module.exports = GET('inspect-container', buildPath, onData, onSuccess, onFailure);

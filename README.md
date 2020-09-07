@@ -3,7 +3,7 @@
 ![pipeline](https://github.com/0x01be/node-red-contrib-ci/raw/main/pipeline.png)
 ![dashboard](https://github.com/0x01be/node-red-contrib-ci/raw/main/dashboard.png)
 
-- Build images
+- Build, inspect and push images
 - Create, start, stop, inspect/stats containers
 - Index everything in elasticsearch
 - and more...

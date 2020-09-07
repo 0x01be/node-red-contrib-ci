@@ -24,6 +24,7 @@ const onData = function (node, msg) {
     previousTime = newTime;
 
     const payload = Object.assign({}, msg.payload);
+    payload.workspace = undefined;
     payload.stream = chunk;
     payload.time = newTime;
 

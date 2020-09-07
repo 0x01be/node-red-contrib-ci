@@ -12,13 +12,16 @@
     "nodes": {
       "docker-config": "nodes/docker-config.js",
       "build-image": "nodes/build-image.js",
+      "inspect-image": "nodes/inspect-image.js",
       "create-container": "nodes/create-container.js",
       "start-stop-container": "nodes/start-stop-container.js",
+      "commit-container": "nodes/commit-container.js",
       "remove-container": "nodes/remove-container.js",
       "inspect-container": "nodes/inspect-container.js",
       "read-logs": "nodes/read-logs.js",
       "container-stats": "nodes/container-stats.js",
-      "extract-files": "nodes/extract-files.js",
+      "create-workspace": "nodes/create-workspace.js",
+      "push-image": "nodes/push-image.js",
       "elasticsearch-config": "nodes/elasticsearch-config.js",
       "index-event": "nodes/index-event.js"
     }

@@ -19,7 +19,7 @@ module.exports = function (RED) {
 
         response.on('error', node.error);
 
-        response.on('data',  node.debug);
+        response.on('data',  node.trace);
 
         response.on('end', function () {
           const success = response.complete && (response.statusCode === 204);
@@ -32,6 +32,8 @@ module.exports = function (RED) {
               _msgid: msg._msgid,
               payload: payload
             });
+          } else {
+            node.error(`${path} [${response.statusCode}]`);
           }
         });
       });

@@ -1,26 +1,15 @@
 module.exports = function (RED) {
-
-  const buildPath = function (msg) {
-    const query = ((typeof msg.payload.image === 'string') && msg.payload.image !== '') ? require('querystring').stringify({
-      name: undefined
-    }) : '';
-
-    return `/containers/create?${query}`;
-  }
-
-  function CreateContainerNode (config) {
+   function CreateWorkspaceNode (config) {
     const node = this;
     const docker = RED.nodes.getNode(config.docker);
 
     RED.nodes.createNode(this, config);
 
     node.on('input', function (msg) {
-      const path = buildPath(msg);
-
       const request = require(docker.protocol).request({
         hostname: docker.hostname,
         port: docker.port,
-        path: path,
+        path: '/volumes/create',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       }, function (response) {
@@ -47,13 +36,11 @@ module.exports = function (RED) {
 
         response.on('end', function () {
           const success = response.complete && (response.statusCode === 201)
-                          && message
-                          && (typeof message.Id === 'string')
-                          && message.Id !== '';
-                        
+                          && message;
+
           if (success) {
             const payload = Object.assign({}, msg.payload);
-            payload.container = message.Id.substring(0, 12);
+            payload.workspace = message;
             payload.time = new Date();
 
             node.send({
@@ -67,27 +54,16 @@ module.exports = function (RED) {
         });
       });
 
-      const image = ((typeof msg.payload.image === 'string') && msg.payload.image !== '')
-                    ? msg.payload.image
-                    : '';
-
-      const Binds = [];
-      if (config.workspace
-          && msg.payload.workspace
-          && msg.payload.workspace.Name) {
-        Binds.push(`${msg.payload.workspace.Name}:${config.workspace}:rw,z`);
-      }
+      const build = msg.payload.build || msg._msgid;
+      const name = ((typeof build === 'string') && build !== '') ? build: undefined;
 
       request.write(JSON.stringify({
-        Tty: true,
-        Image: image,
-        HostConfig: {
-          Binds: Binds
-        }
+        Name: name,
+        Driver: "local"
       }));
       request.end();
     });
   }
 
-  RED.nodes.registerType('create-container', CreateContainerNode);
+  RED.nodes.registerType('create-workspace', CreateWorkspaceNode);
 }

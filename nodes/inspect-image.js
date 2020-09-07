@@ -1,12 +1,9 @@
 const GET = require('./common/docker-get');
 
-const buildPath = function (msg, config) {
-  const id = msg.payload.container || config.container;
-  const query = require('querystring').stringify({
-    path: msg.payload.path || config.path
-  });
+const buildPath = function (msg) {
+  const id = msg.payload.container;
 
-  return `/containers/${id}/archive?${query}`;
+  return `/image/${id}/json`;
 }
 
 const onData = function () {
@@ -21,7 +18,7 @@ const onData = function () {
 
 const onSuccess = function (msg, node, data) {
   const payload = Object.assign({}, msg.payload);
-  payload.tar = data;
+  payload.image_info = JSON.parse(data);
   payload.time = new Date();
 
   node.send({
@@ -30,4 +27,8 @@ const onSuccess = function (msg, node, data) {
   });
 };
 
-module.exports = GET('extract-files', buildPath, onData, onSuccess);
+const onFailure = function (msg, node, data) {
+  node.error(data);
+};
+
+module.exports = GET('inspect-image', buildPath, onData, onSuccess, onFailure);

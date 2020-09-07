@@ -74,24 +74,23 @@
     <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{ commit: 'string', repository: 'string', remote: 'string' }</pre></code>
+            <code><pre>{ remote: 'string' }</pre></code>
         </dt>
     </dl>
     <h3>Output 1: image</h3>
     <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{ commit: 'string', repository: 'string', image: 'string', time: 'date' }</pre></code>
+            <code><pre>{ image: 'string', time: 'date' }</pre></code>
         </dt>
     </dl>
     <h3>Output 2: stdout stream</h3>
     <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{ commit: 'string', repository: 'string', stream: 'string', time: 'date' }</pre></code>
+            <code><pre>{ stream: 'string', time: 'date' }</pre></code>
         </dt>
     </dl>
     <h3>Details</h3>
     <p>Currently only supports <code>remote</code> Dockerfile (no tar)</p>
-    <p>To try it out, drop a Dockerfile in <code>/static</code> and set <code>remote</code> to <code>http://localhost:1880/Dockerfile</code>.</p>
 </script>

@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('inspect-container', {
+    RED.nodes.registerType('push-image', {
         category: 'ci',
         color: '#ffaaaa',
         defaults: {
@@ -11,21 +11,25 @@
                 value: undefined,
                 type: "docker-config",
                 required: true
+            },
+            auth: {
+                value: undefined,
+                required: false
             }
         },
         inputs: 1,
-        outputs: 1,
+        outputs: 0,
         icon: 'arrow-in.png',
         label: function () {
-            return (this.name && (this.name !== '')) ? this.name : 'container';
+            return (this.name && this.name !== '') ? this.name : 'push';
         }
     });
 </script>
 
-<script type="text/html" data-template-name="inspect-container">
+<script type="text/html" data-template-name="push-image">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Inspect">
+        <input type="text" id="node-input-name" placeholder="Create">
     </div>
     <hr>
     <section>
@@ -33,23 +37,21 @@
             <label for="node-input-docker"><i class="icon-tag"></i> Docker</label>
             <input id="node-input-docker">
         </div>
+        <div class="form-row">
+            <label for="node-input-auth"><i class="icon-tag"></i> X-Registry-Auth</label>
+            <input type="text" id="node-input-auth">
+        </div>
     </section>
 </script>
 
-<script type="text/html" data-help-name="inspect-container">
-    <p>Inspect a docker container</p>
-    <h3>Input: container</h3>
+<script type="text/html" data-help-name="push-image">
+    <p>Push a docker image to a repository</p>
+    <p>(<code>X-Registry-Auth</code> is needed to push to the docker hub)</p>
+    <h3>Input: image</h3>
     <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{ container: 'string' }</pre></code>
-        </dt>
-    </dl>
-    <h3>Output: result</h3>
-    <dl class="message-properties">
-        <dt>payload
-            <span class="property-type"> object</span>
-            <code><pre>{ container: 'string', container_info: 'object' time: 'date' }</pre></code>
+            <code><pre>{ repo: 'string', tag: 'string'}</pre></code>
         </dt>
     </dl>
 </script>

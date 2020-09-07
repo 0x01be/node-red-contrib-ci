@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('extract-files', {
+    RED.nodes.registerType('commit-container', {
         category: 'ci',
         color: '#ffaaaa',
         defaults: {
@@ -12,31 +12,28 @@
                 type: "docker-config",
                 required: true
             },
-            container: {
+            repo: {
                 value: undefined,
                 required: false
             },
-            path: {
+            tag: {
                 value: undefined,
-                required: false,
-                validate: function (value) {
-                    return value === '' || /[^\0]+/.test(value);
-                }
-            },
+                required: false
+            }
         },
         inputs: 1,
         outputs: 1,
         icon: 'arrow-in.png',
         label: function () {
-            return (this.name && this.name !== '') ? this.name : (this.image ? this.image : 'extract');
+            return (this.name && this.name !== '') ? this.name : 'commit';
         }
     });
 </script>
 
-<script type="text/html" data-template-name="extract-files">
+<script type="text/html" data-template-name="commit-container">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Create">
+        <input type="text" id="node-input-name" placeholder="Commit">
     </div>
     <hr>
     <section>
@@ -45,32 +42,30 @@
             <input id="node-input-docker">
         </div>
         <div class="form-row">
-            <label for="node-input-container"><i class="icon-tag"></i> Container</label>
-            <input type="text" id="node-input-container">
+            <label for="node-input-repo"><i class="icon-tag"></i> Repository</label>
+            <input type="text" id="node-input-repo" placeholder="">
         </div>
         <div class="form-row">
-            <label for="node-input-path"><i class="icon-tag"></i> Path</label>
-            <input type="text" id="node-input-path" placeholder="/data">
+            <label for="node-input-tag"><i class="icon-tag"></i> Tag</label>
+            <input type="text" id="node-input-tag" placeholder="latest">
         </div>
     </section>
 </script>
 
-<script type="text/html" data-help-name="extract-files">
-    <p>Extract files from a docker container</p>
+<script type="text/html" data-help-name="commit-container">
+    <p>Create a docker image from a container</p>
     <h3>Input: container</h3>
     <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{ commit: 'string', repository: 'string', image: 'string', container: 'string', path: 'string' }</pre></code>
+            <code><pre>{ container: 'string' }</pre></code>
         </dt>
     </dl>
-    <h3>Output: tar archive</h3>
+    <h3>Output: image</h3>
     <dl class="message-properties">
         <dt>payload
             <span class="property-type"> object</span>
-            <code><pre>{ commit: 'string', repository: 'string', image: 'string', container: 'string', tar: 'string' }</pre></code>
+            <code><pre>{ container: 'string', image: 'string', time: 'date' }</pre></code>
         </dt>
     </dl>
-    <h3>Details</h3>
-    <p>Currently only supports text files in tar</p>
 </script>
