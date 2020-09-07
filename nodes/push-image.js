@@ -24,6 +24,7 @@ module.exports = function (RED) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Content-Length': 0,
           'X-Registry-Auth': config.auth
         }
       }, function (response) {
@@ -34,8 +35,11 @@ module.exports = function (RED) {
         let output = "";
 
         response.on('data', function (chunk) {
-          output += chunk;
-          node.trace(chunk);
+          if ((typeof chunk === 'string') && chunk !== '') {
+            node.trace(chunk);
+
+            output += chunk;
+          }
         });
 
         response.on('end', function () {
@@ -47,7 +51,6 @@ module.exports = function (RED) {
         });
       });
 
-      request.write('');
       request.end();
     });
   }

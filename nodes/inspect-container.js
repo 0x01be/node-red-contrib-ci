@@ -11,7 +11,10 @@ const buildPath = function (msg) {
 
 const onData = function () {
   const result = function (chunk) {
-    return result.accumulator += chunk;
+    if ((typeof chunk === 'string') && chunk !== '') {
+      result.accumulator += chunk
+    }
+    return result.accumulator;
   };
 
   result.accumulator = "";

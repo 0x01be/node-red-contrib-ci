@@ -34,11 +34,10 @@ module.exports = function (RED) {
         let message = undefined;
 
         response.on('data', function (chunk) {
-          node.trace(chunk);
-
-          output += chunk;
-
           if ((typeof chunk === 'string') && chunk !== '') {
+            node.trace(chunk);
+
+            output += chunk;
             try {
               message = JSON.parse(chunk)
             } catch (error) {

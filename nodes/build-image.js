@@ -53,38 +53,40 @@ module.exports = function (RED) {
         let result = undefined;
 
         response.on('data', function (chunk) {
-          node.trace(chunk);
+          if ((typeof chunk === 'string') && chunk !== '') {
+            node.trace(chunk);
 
-          output += chunk;
+            output += chunk;
 
-          // TODO FIX!!
-          // Needed to avoid identical timestamps on consecutive events
-          let newTime = new Date();
-          while (previousTime.getTime() === newTime.getTime()) newTime = new Date();
-          previousTime = newTime;
+            // TODO FIX!!
+            // Needed to avoid identical timestamps on consecutive events
+            let newTime = new Date();
+            while (previousTime.getTime() === newTime.getTime()) newTime = new Date();
+            previousTime = newTime;
 
-          try {
-            const message = JSON.parse(chunk);
+            try {
+              const message = JSON.parse(chunk);
 
-            if (message.aux && (typeof message.aux.ID === 'string') && message.aux.ID.startsWith('sha256:')) {
-              result = message.aux.ID.slice(7);
+              if (message.aux && (typeof message.aux.ID === 'string') && message.aux.ID.startsWith('sha256:')) {
+                result = message.aux.ID.slice(7);
+              }
+
+              // Status messages are ignored
+              if (message.stream) {
+                const payload = Object.assign({}, msg.payload);
+                payload.image = result && result.substring(0, 12);
+                payload.stream = message.stream;
+                payload.workspace = undefined;
+                payload.time = newTime;
+
+                node.send([null, {
+                  _msgid: msg._msgid,
+                  payload: payload
+                }]);
+              }
+            } catch (error) {
+              node.error(error);
             }
-
-            // Status messages are ignored
-            if (message.stream) {
-              const payload = Object.assign({}, msg.payload);
-              payload.image = result && result.substring(0, 12);
-              payload.stream = message.stream;
-              payload.workspace = undefined;
-              payload.time = newTime;
-
-              node.send([null, {
-                _msgid: msg._msgid,
-                payload: payload
-              }]);
-            }
-          } catch (error) {
-            node.error(error);
           }
         });
 

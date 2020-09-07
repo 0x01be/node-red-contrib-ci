@@ -1,7 +1,7 @@
 # node-red-contrib-ci
 
-![pipeline](https://github.com/0x01be/node-red-contrib-ci/raw/main/pipeline.png)
-![dashboard](https://github.com/0x01be/node-red-contrib-ci/raw/main/dashboard.png)
+![pipeline](https://github.com/0x01be/node-red-contrib-ci/raw/main/screenshots/pipeline.png)
+![dashboard](https://github.com/0x01be/node-red-contrib-ci/raw/main/screenshots/dashboard.png)
 
 - Build, inspect and push images
 - Create, start, stop, inspect/stats containers
