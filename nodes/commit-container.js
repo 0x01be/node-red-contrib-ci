@@ -42,6 +42,7 @@ module.exports = function (RED) {
               message = JSON.parse(chunk)
             } catch (error) {
               node.error(error);
+              node.error(chunk);
             }
           }
         });

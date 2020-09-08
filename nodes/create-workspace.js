@@ -25,11 +25,12 @@ module.exports = function (RED) {
             node.trace(chunk);
 
             output += chunk;
-            
+
             try {
               message = JSON.parse(chunk)
             } catch (error) {
               node.error(error);
+              node.error(chunk);
             }
           }
         });

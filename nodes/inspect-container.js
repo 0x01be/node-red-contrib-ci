@@ -12,6 +12,8 @@ const buildPath = function (msg) {
 const onData = function () {
   const result = function (chunk) {
     if ((typeof chunk === 'string') && chunk !== '') {
+      node.trace(chunk);
+      
       result.accumulator += chunk
     }
     return result.accumulator;

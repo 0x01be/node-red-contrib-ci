@@ -25,5 +25,8 @@
       "elasticsearch-config": "nodes/elasticsearch-config.js",
       "index-event": "nodes/index-event.js"
     }
+  },
+  "dependencies": {
+    "@elastic/elasticsearch": "7.9.0"
   }
 }

@@ -64,29 +64,34 @@ module.exports = function (RED) {
             while (previousTime.getTime() === newTime.getTime()) newTime = new Date();
             previousTime = newTime;
 
+            let message = undefined;
+            let result = undefined;
+
             try {
-              const message = JSON.parse(chunk);
-
-              if (message.aux && (typeof message.aux.ID === 'string') && message.aux.ID.startsWith('sha256:')) {
-                result = message.aux.ID.slice(7);
-              }
-
-              // Status messages are ignored
-              if (message.stream) {
-                const payload = Object.assign({}, msg.payload);
-                payload.image = result && result.substring(0, 12);
-                payload.stream = message.stream;
-                payload.workspace = undefined;
-                payload.time = newTime;
-
-                node.send([null, {
-                  _msgid: msg._msgid,
-                  payload: payload
-                }]);
-              }
+              message = JSON.parse(chunk);
             } catch (error) {
               node.error(error);
+              node.error(chunk);
             }
+
+            if (message && message.aux && (typeof message.aux.ID === 'string') && message.aux.ID.startsWith('sha256:')) {
+              result = message.aux.ID.slice(7);
+            }
+
+            // Status messages are ignored
+            if (message && message.stream) {
+              const payload = Object.assign({}, msg.payload);
+              payload.image = result && result.substring(0, 12);
+              payload.stream = message.stream;
+              payload.workspace = undefined;
+              payload.time = newTime;
+
+              node.send([null, {
+                _msgid: msg._msgid,
+                payload: payload
+              }]);
+            }
+            
           }
         });
 
@@ -95,7 +100,7 @@ module.exports = function (RED) {
 
           if (success) {
             const payload = Object.assign({}, msg.payload);
-            payload.image = result && result.substring(0, 12);
+            payload.image = result.substring(0, 12);
             payload.time = new Date();
 
             node.send([{

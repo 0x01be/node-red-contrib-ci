@@ -17,6 +17,8 @@ const onData = function (node, msg) {
   let previousTime = new Date();
 
   const result = function (chunk) {
+    node.trace(chunk);
+    
     // TODO FIX!!
     // Needed to avoid identical timestamps on consecutive events
     let newTime = new Date();

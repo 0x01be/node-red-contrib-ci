@@ -62,6 +62,7 @@ const onData = function (node, msg) {
         });
       } catch (error) {
         node.error(error);
+        node.error(chunk);
       }
     }
   };
