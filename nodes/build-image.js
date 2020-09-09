@@ -65,7 +65,6 @@ module.exports = function (RED) {
             previousTime = newTime;
 
             let message = undefined;
-            let result = undefined;
 
             try {
               message = JSON.parse(chunk);

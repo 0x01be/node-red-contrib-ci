@@ -6,6 +6,7 @@
 - Build, inspect and push images
 - Create, start, stop, inspect/stats containers
 - Index everything in elasticsearch
+- Create dashboards in node-red and kibana
 - and more...
 
 ## Get started
