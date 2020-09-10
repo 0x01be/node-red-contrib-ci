@@ -1,11 +1,19 @@
 const GET = require('./common/docker-get');
 
 const buildPath = function (msg, config) {
+  const container = msg.payload.container;
+  const stream = config.stream;
+
+  if ((typeof container !== 'string') || container === '') {
+    node.error("'container' needs to be specified using 'msg' or 'config'");
+    return;
+  }
+
   const query = require('querystring').stringify({
-    stream: config.stream
+    stream: stream
   });
 
-  return `/containers/${msg.payload.container}/stats?${query}`;
+  return `/containers/${container}/stats?${query}`;
 }
 
 const onData = function (node, msg) {

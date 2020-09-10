@@ -1,11 +1,28 @@
 module.exports = function (RED) {
 
   const buildPath = function (msg, config) {
-    const query = ((typeof msg.payload.container === 'string') && msg.payload.container !== '') ? require('querystring').stringify({
-      container: msg.payload.container,
-      repo: msg.payload.repo || config.repo,
-      tag: msg.payload.tag || config.tag
-    }) : '';
+    const container = msg.payload.container;
+    const repo = msg.payload.repo || config.repo;
+    const tag = msg.payload.tag || config.tag;
+
+    if ((typeof container !== 'string') || container === '') {
+      node.error("'container' needs to be specified using 'msg' or 'config'");
+      return;
+    }
+    if ((typeof repo !== 'string') || repo === '') {
+      node.error("'repo' needs to be specified using 'msg' or 'config'");
+      return;
+    }
+    if ((typeof tag !== 'string') || tag === '') {
+      node.error("'tag' needs to be specified using 'msg' or 'config'");
+      return;
+    }
+
+    const query = require('querystring').stringify({
+      container: container,
+      repo: repo,
+      tag: tag
+    });
 
     return `/commit?${query}`;
   }
@@ -18,6 +35,8 @@ module.exports = function (RED) {
 
     node.on('input', function (msg) {
       const path = buildPath(msg, config);
+
+      if (!path) return;
 
       const request = require(docker.protocol).request({
         hostname: docker.hostname,
@@ -38,6 +57,7 @@ module.exports = function (RED) {
             node.trace(chunk);
 
             output += chunk;
+
             try {
               message = JSON.parse(chunk)
             } catch (error) {

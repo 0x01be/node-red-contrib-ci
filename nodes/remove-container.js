@@ -2,13 +2,11 @@ module.exports = function (RED) {
 
   const buildPath = function (msg, config) {
     const container = msg.payload.container;
-    const v = Boolean(msg.payload.v || config.v);
-    const force = Boolean(msg.payload.force || config.force);
-    const link = Boolean(msg.payload.link || config.link);
+    const force = msg.payload.force || config.force;
     const query = require('querystring').stringify({
-      v: v,
+      v: false,
       force: force,
-      link: link
+      link: false
     });
 
     return `/containers/${container}?${query}`;

@@ -1,17 +1,32 @@
 module.exports = function (RED) {
 
   function buildPath (msg, config) {
-    const remote = ((typeof msg.payload.remote === 'string') && msg.payload.remote !== '') ? msg.payload.remote : config.remote;
-    const nocache = ((typeof msg.payload.nocache === 'string') && msg.payload.nocache !== '') ? msg.payload.nocache : config.nocache;
-    const pull = ((typeof msg.payload.pull === 'string') && msg.payload.pull !== '') ? msg.payload.pull : config.pull;
+    const remote = msg.payload.remote || config.remote;
+    const nocache = msg.payload.nocache || config.nocache;
+    const pull = msg.payload.pull || config.pull;
+
+    if ((typeof remote !== 'string') || remote === '') {
+      node.error("'remote' needs to be specified using 'msg' or 'config'");
+      return;
+    }
+    try {
+      const url = new URL(remote) 
+      if ((url.protocol !== 'http:') || (url.protocol === 'https:')) {
+        node.error(`'remote' needs to be a URL but was ${remote}`);
+        return;
+      }
+    } catch (error) {
+      node.error(`'remote' failed to validate as a URL: ${error}`);
+      return;
+    }
 
     const query = require('querystring').stringify({
       remote: remote,
       q: false,
       rm: true,
       forcerm: true,
-      nocache: nocache,
-      pull: pull
+      nocache: Boolean(nocache),
+      pull: Boolean(pull)
     });
 
     return `/build?${query}`;
@@ -33,6 +48,8 @@ module.exports = function (RED) {
     node.on('input', function (msg) {
       const path = buildPath(msg, config);
 
+      if (!path) return;
+      
       const request = require(docker.protocol).request({
         hostname: docker.hostname,
         port: docker.port,
@@ -90,7 +107,6 @@ module.exports = function (RED) {
                 payload: payload
               }]);
             }
-            
           }
         });
 

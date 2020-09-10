@@ -12,5 +12,5 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config);
   }
 
-  RED.nodes.registerType("elasticsearch-config", ElasticsearchConfigNode);
+  RED.nodes.registerType('elasticsearch-config', ElasticsearchConfigNode);
 }

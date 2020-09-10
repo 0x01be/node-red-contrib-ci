@@ -1,9 +1,14 @@
 const GET = require('./common/docker-get');
 
 const buildPath = function (msg) {
-  const id = msg.payload.container;
+  const image = msg.payload.image;
 
-  return `/image/${id}/json`;
+  if ((typeof image !== 'string') || image === '') {
+    node.error("'image' needs to be specified using 'msg' or 'config'");
+    return;
+  }
+
+  return `/image/${image}/json`;
 }
 
 const onData = function () {

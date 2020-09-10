@@ -1,12 +1,18 @@
 const GET = require('./common/docker-get');
 
 const buildPath = function (msg) {
-  const id = msg.payload.container;
+  const container = msg.payload.container;
+
+  if ((typeof container !== 'string') || container === '') {
+    node.error("'container' needs to be specified using 'msg' or 'config'");
+    return;
+  }
+
   const query = require('querystring').stringify({
     size: true
   });
 
-  return `/containers/${id}/json?${query}`;
+  return `/containers/${container}/json?${query}`;
 }
 
 const onData = function () {

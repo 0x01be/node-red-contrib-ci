@@ -8,5 +8,5 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config);  
   }
 
-  RED.nodes.registerType("docker-config", DockerConfigNode);
+  RED.nodes.registerType('docker-config', DockerConfigNode);
 }

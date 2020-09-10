@@ -60,7 +60,7 @@ module.exports = function (RED) {
 
       request.write(JSON.stringify({
         Name: name,
-        Driver: "local"
+        Driver: 'local'
       }));
       request.end();
     });

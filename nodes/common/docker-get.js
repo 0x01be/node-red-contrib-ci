@@ -16,6 +16,8 @@ module.exports = function DockerGet (name, buildPath, onData, onSuccess, onFailu
       node.on('input', function (msg) {
         const path = buildPath(msg, config);
 
+        if (!path) return;
+        
         protocol.get({
           hostname: docker.hostname,
           port: docker.port,

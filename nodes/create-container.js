@@ -1,9 +1,9 @@
 module.exports = function (RED) {
 
-  const buildPath = function (msg) {
-    const query = ((typeof msg.payload.image === 'string') && msg.payload.image !== '') ? require('querystring').stringify({
+  const buildPath = function () {
+    const query = require('querystring').stringify({
       name: undefined
-    }) : '';
+    });
 
     return `/containers/create?${query}`;
   }
@@ -15,6 +15,13 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config);
 
     node.on('input', function (msg) {
+      const image = msg.payload.image;
+
+      if ((typeof image !== 'string') || image === '') {
+        node.error("'image' needs to be specified using 'msg' or 'config'");
+        return;
+      }
+
       const path = buildPath(msg);
 
       const request = require(docker.protocol).request({
@@ -66,10 +73,6 @@ module.exports = function (RED) {
           }
         });
       });
-
-      const image = ((typeof msg.payload.image === 'string') && msg.payload.image !== '')
-                    ? msg.payload.image
-                    : '';
 
       const Binds = [];
       if (config.workspace
