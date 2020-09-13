@@ -74,18 +74,30 @@ module.exports = function (RED) {
         });
       });
 
-      const Binds = [];
+      const binds = [];
       if (config.workspace
           && msg.payload.workspace
           && msg.payload.workspace.Name) {
-        Binds.push(`${msg.payload.workspace.Name}:${config.workspace}:rw,z`);
+        binds.push(`${msg.payload.workspace.Name}:${config.workspace}:rw,z`);
+      }
+
+      let cmd = [];
+      if ((typeof config.cmd === 'string') && (config.cmd !== '')) {
+        cmd = config.cmd.split(' ');
+      }
+
+      let env = [];
+      if ((typeof config.env === 'string') && (config.env !== '')) {
+        env = config.env.split(' ');
       }
 
       request.write(JSON.stringify({
         Tty: true,
         Image: image,
+        Cmd: cmd,
+        Env: env,
         HostConfig: {
-          Binds: Binds
+          Binds: binds
         }
       }));
       request.end();

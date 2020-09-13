@@ -12,6 +12,14 @@
                 type: 'docker-config',
                 required: true
             },
+            cmd: {
+                value: undefined,
+                required: false
+            },
+            env: {
+                value: undefined,
+                required: false
+            },
             workspace: {
                 value: undefined,
                 required: false
@@ -36,6 +44,14 @@
         <div class="form-row">
             <label for="node-input-docker"><i class="icon-tag"></i> Docker</label>
             <input id="node-input-docker">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cmd"><i class="icon-tag"></i> CMD</label>
+            <input type="text" id="node-input-cmd" placeholder="command --option argument">
+        </div>
+        <div class="form-row">
+            <label for="node-input-env"><i class="icon-tag"></i> ENV</label>
+            <input type="text" id="node-input-env" placeholder="VAR1=value1 VAR2=value2">
         </div>
         <div class="form-row">
             <label for="node-input-workspace"><i class="icon-tag"></i> Workspace path</label>
