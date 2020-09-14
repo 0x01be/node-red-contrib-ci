@@ -82,17 +82,25 @@ module.exports = function (RED) {
       }
 
       let cmd = [];
-      if ((typeof msg.payload.cmd === 'string') && (msg.payload.cmd !== '')) {
-        cmd = JSON.parse(msg.payload.cmd);
-      } else if ((typeof config.cmd === 'string') && (config.cmd !== '')) {
-        cmd = JSON.parse(config.cmd);
+      try {
+        if ((typeof msg.payload.cmd === 'string') && (msg.payload.cmd !== '')) {
+          cmd = JSON.parse(msg.payload.cmd);
+        } else if ((typeof config.cmd === 'string') && (config.cmd !== '')) {
+          cmd = JSON.parse(config.cmd);
+        }
+      } catch (error) {
+        node.error(value);
       }
 
       let env = [];
-      if ((typeof msg.payload.env === 'string') && (msg.payload.env !== '')) {
-        env = JSON.parse(msg.payload.env);
-      } else if ((typeof config.env === 'string') && (config.env !== '')) {
-        env = JSON.parse(config.env);
+      try {
+        if ((typeof msg.payload.env === 'string') && (msg.payload.env !== '')) {
+          env = JSON.parse(msg.payload.env);
+        } else if ((typeof config.env === 'string') && (config.env !== '')) {
+          env = JSON.parse(config.env);
+        }
+      } catch (error) {
+        node.error(value);
       }
 
       const body = {

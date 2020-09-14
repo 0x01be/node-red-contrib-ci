@@ -1,4 +1,19 @@
 <script type="text/javascript">
+    function isJsonStringArrayOrNothing (value) {
+        if (value === undefined || value === '') return true;
+
+        let result = false;
+        try {
+            const parsed = JSON.parse(value);
+            result = Array.isArray(parsed);
+            parsed.forEach(element => {
+                result = (typeof element === 'string');
+            });
+        } catch (error) {}
+
+        return result;
+    }
+
     RED.nodes.registerType('create-container', {
         category: 'ci',
         color: '#ffaaaa',
@@ -18,11 +33,17 @@
             },
             cmd: {
                 value: undefined,
-                required: false
+                required: false,
+                validate: function (value) {
+                    return isJsonStringArrayOrNothing(value);
+                }
             },
             env: {
                 value: undefined,
-                required: false
+                required: false,
+                validate: function (value) {
+                    return isJsonStringArrayOrNothing(value);
+                }
             },
             workspace: {
                 value: undefined,
