@@ -88,6 +88,12 @@ module.exports = function (RED) {
         } else if ((typeof config.cmd === 'string') && (config.cmd !== '')) {
           cmd = JSON.parse(config.cmd);
         }
+        if (!Array.isArray(cmd)) cmd = [];
+        cmd.forEach(element => {
+          if ((typeof element !== 'string') || (element === '')) {
+            cmd = [];
+          }
+        });
       } catch (error) {
         node.error(value);
       }
@@ -99,6 +105,12 @@ module.exports = function (RED) {
         } else if ((typeof config.env === 'string') && (config.env !== '')) {
           env = JSON.parse(config.env);
         }
+        if (!Array.isArray(env)) env = [];
+        env.forEach(element => {
+          if ((typeof element !== 'string') || (element === '')) {
+            env = [];
+          }
+        });
       } catch (error) {
         node.error(value);
       }
