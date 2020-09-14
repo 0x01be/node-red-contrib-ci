@@ -1,8 +1,8 @@
 module.exports = function (RED) {
 
-  const buildPath = function () {
+  const buildPath = function (msg, config) {
     const query = require('querystring').stringify({
-      name: undefined
+      name: msg.payload.hostname || config.hostname
     });
 
     return `/containers/create?${query}`;
@@ -22,7 +22,7 @@ module.exports = function (RED) {
         return;
       }
 
-      const path = buildPath(msg);
+      const path = buildPath(msg, config);
 
       const request = require(docker.protocol).request({
         hostname: docker.hostname,
@@ -82,24 +82,34 @@ module.exports = function (RED) {
       }
 
       let cmd = [];
-      if ((typeof config.cmd === 'string') && (config.cmd !== '')) {
-        cmd = config.cmd.split(' ');
+      if ((typeof msg.payload.cmd === 'string') && (msg.payload.cmd !== '')) {
+        cmd = JSON.parse(msg.payload.cmd);
+      } else if ((typeof config.cmd === 'string') && (config.cmd !== '')) {
+        cmd = JSON.parse(config.cmd);
       }
 
       let env = [];
-      if ((typeof config.env === 'string') && (config.env !== '')) {
-        env = config.env.split(' ');
+      if ((typeof msg.payload.env === 'string') && (msg.payload.env !== '')) {
+        env = JSON.parse(msg.payload.env);
+      } else if ((typeof config.env === 'string') && (config.env !== '')) {
+        env = JSON.parse(config.env);
       }
 
-      request.write(JSON.stringify({
+      const body = {
         Tty: true,
         Image: image,
         Cmd: cmd,
         Env: env,
         HostConfig: {
-          Binds: binds
+          Binds: binds,
         }
-      }));
+      }
+      
+      body.Hostname = msg.payload.hostname || config.hostname;
+      body.Domainname = msg.payload.domain;
+      body.HostConfig.PortBindings = msg.payload.ports;
+
+      request.write(JSON.stringify(body));
       request.end();
     });
   }

@@ -12,6 +12,10 @@
                 type: 'docker-config',
                 required: true
             },
+            hostname: {
+                value: undefined,
+                required: false
+            },
             cmd: {
                 value: undefined,
                 required: false
@@ -46,12 +50,16 @@
             <input id="node-input-docker">
         </div>
         <div class="form-row">
+            <label for="node-input-hostname"><i class="icon-tag"></i> Hostname</label>
+            <input type="text" id="node-input-hostname" placeholder="Used as container name as well">
+        </div>
+        <div class="form-row">
             <label for="node-input-cmd"><i class="icon-tag"></i> CMD</label>
-            <input type="text" id="node-input-cmd" placeholder="command --option argument">
+            <input type="text" id="node-input-cmd" placeholder='["command", "--option", "argument"]'>
         </div>
         <div class="form-row">
             <label for="node-input-env"><i class="icon-tag"></i> ENV</label>
-            <input type="text" id="node-input-env" placeholder="VAR1=value1 VAR2=value2">
+            <input type="text" id="node-input-env" placeholder='["VAR1=value1", "VAR2=value2"]'>
         </div>
         <div class="form-row">
             <label for="node-input-workspace"><i class="icon-tag"></i> Workspace path</label>
