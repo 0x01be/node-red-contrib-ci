@@ -7,7 +7,7 @@
             const parsed = JSON.parse(value);
             result = Array.isArray(parsed);
             parsed.forEach(element => {
-                result = (typeof element === 'string');
+                result = (typeof element === 'string') && (element !== '');
             });
         } catch (error) {}
 
@@ -34,16 +34,12 @@
             cmd: {
                 value: undefined,
                 required: false,
-                validate: function (value) {
-                    return isJsonStringArrayOrNothing(value);
-                }
+                validate: isJsonStringArrayOrNothing
             },
             env: {
                 value: undefined,
                 required: false,
-                validate: function (value) {
-                    return isJsonStringArrayOrNothing(value);
-                }
+                validate: isJsonStringArrayOrNothing
             },
             workspace: {
                 value: undefined,
