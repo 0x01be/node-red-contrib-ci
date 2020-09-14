@@ -81,34 +81,34 @@ module.exports = function (RED) {
         binds.push(`${msg.payload.workspace.Name}:${config.workspace}:rw,z`);
       }
 
-      let cmd = [];
+      let cmd = undefined;
       try {
         if ((typeof msg.payload.cmd === 'string') && (msg.payload.cmd !== '')) {
           cmd = JSON.parse(msg.payload.cmd);
         } else if ((typeof config.cmd === 'string') && (config.cmd !== '')) {
           cmd = JSON.parse(config.cmd);
         }
-        if (!Array.isArray(cmd)) cmd = [];
+        if (!Array.isArray(cmd)) cmd = undefined;
         cmd.forEach(element => {
           if ((typeof element !== 'string') || (element === '')) {
-            cmd = [];
+            cmd = undefined;
           }
         });
       } catch (error) {
         node.error(value);
       }
 
-      let env = [];
+      let env = undefined;
       try {
         if ((typeof msg.payload.env === 'string') && (msg.payload.env !== '')) {
           env = JSON.parse(msg.payload.env);
         } else if ((typeof config.env === 'string') && (config.env !== '')) {
           env = JSON.parse(config.env);
         }
-        if (!Array.isArray(env)) env = [];
+        if (!Array.isArray(env)) env = undefined;
         env.forEach(element => {
           if ((typeof element !== 'string') || (element === '')) {
-            env = [];
+            env = undefined;
           }
         });
       } catch (error) {
