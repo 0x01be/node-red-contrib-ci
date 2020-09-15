@@ -98,6 +98,7 @@ module.exports = function (RED) {
           });
         }
       } catch (error) {
+        node.error(cmd);
         node.error(error);
       }
 
@@ -118,6 +119,7 @@ module.exports = function (RED) {
           });
         }
       } catch (error) {
+        node.error(env);
         node.error(error);
       }
 
