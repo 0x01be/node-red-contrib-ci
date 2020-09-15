@@ -118,7 +118,7 @@ module.exports = function (RED) {
           });
         }
       } catch (error) {
-        node.error(value);
+        node.error(error);
       }
 
       const body = {
