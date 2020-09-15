@@ -2,10 +2,10 @@
 .config.json.backup
 .flows.json.backup
 flows_cred.json
+.flows_cred.json.backup
 node_modules
 .DS_Store
 nodes/.DS_Store
-static/.DS_Store
 gogs
 gitea
 .npm
