@@ -88,14 +88,17 @@ module.exports = function (RED) {
         } else if ((typeof config.cmd === 'string') && (config.cmd !== '')) {
           cmd = JSON.parse(config.cmd);
         }
-        if (!Array.isArray(cmd)) cmd = undefined;
-        cmd.forEach(element => {
-          if ((typeof element !== 'string') || (element === '')) {
-            cmd = undefined;
-          }
-        });
+        if (!Array.isArray(cmd)) {
+          cmd = undefined;
+        } else {
+          cmd.forEach(element => {
+            if ((typeof element !== 'string') || (element === '')) {
+              cmd = undefined;
+            }
+          });
+        }
       } catch (error) {
-        node.error(value);
+        node.error(error);
       }
 
       let env = undefined;
@@ -105,12 +108,15 @@ module.exports = function (RED) {
         } else if ((typeof config.env === 'string') && (config.env !== '')) {
           env = JSON.parse(config.env);
         }
-        if (!Array.isArray(env)) env = undefined;
-        env.forEach(element => {
-          if ((typeof element !== 'string') || (element === '')) {
-            env = undefined;
-          }
-        });
+        if (!Array.isArray(env)) {
+          env = undefined;
+        } else {
+          env.forEach(element => {
+            if ((typeof element !== 'string') || (element === '')) {
+              env = undefined;
+            }
+          });
+        }
       } catch (error) {
         node.error(value);
       }
