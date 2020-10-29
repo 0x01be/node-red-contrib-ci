@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-ci",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "The good parts of Docker on Node RED",
   "keywords": [
     "continuous",
