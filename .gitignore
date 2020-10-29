@@ -1,6 +1,11 @@
 settings.js
 .config.json
 .config.json.backup
+.config.nodes.json
+.config.nodes.json.backup
+.config.projects.json
+.config.runtime.json
+.config.users.json
 flows.json
 .flows.json.backup
 flows_cred.json
