@@ -1,4 +1,4 @@
-FROM nodered/node-red:1.1.3-12-minimal
+FROM nodered/node-red:1.2.2-12
 
 RUN npm install \
     node-red-contrib-wait-paths \
