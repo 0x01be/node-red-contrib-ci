@@ -17,3 +17,4 @@ gogs
 gitea
 .npm
 package-lock.json
+.config.users.json.backup

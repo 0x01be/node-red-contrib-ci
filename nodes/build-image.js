@@ -10,7 +10,7 @@ module.exports = function (RED) {
       return;
     }
     try {
-      const url = new URL(remote) 
+      const url = new URL(remote)
       if ((url.protocol !== 'http:') || (url.protocol === 'https:')) {
         node.error(`'remote' needs to be a URL but was ${remote}`);
         return;
@@ -33,23 +33,23 @@ module.exports = function (RED) {
   }
 
   function isSuccessful (response, image) {
-    const result = response.complete && (response.statusCode === 200) 
-                && (typeof image === 'string') && (image !== '');
-                
+    const result = response.complete && (response.statusCode === 200)
+      && (typeof image === 'string') && (image !== '');
+
     return result;
   }
 
   function BuildImageNode (config) {
     const node = this;
     const docker = RED.nodes.getNode(config.docker);
-    
+
     RED.nodes.createNode(this, config);
 
     node.on('input', function (msg) {
       const path = buildPath(msg, config);
 
       if (!path) return;
-      
+
       const request = require(docker.protocol).request({
         hostname: docker.hostname,
         port: docker.port,
@@ -71,8 +71,6 @@ module.exports = function (RED) {
 
         response.on('data', function (chunk) {
           if ((typeof chunk === 'string') && chunk !== '') {
-            node.trace(chunk);
-
             output += chunk;
 
             // TODO FIX!!
@@ -81,31 +79,35 @@ module.exports = function (RED) {
             while (previousTime.getTime() === newTime.getTime()) newTime = new Date();
             previousTime = newTime;
 
-            let message = undefined;
-
             try {
-              message = JSON.parse(chunk);
+              chunk.split('\n').forEach(function (item) {
+                const json = item.replace('\r', '').trim();
+
+                if (json !== '') {
+                  const message = JSON.parse(json);
+
+                  if (message && message.aux && (typeof message.aux.ID === 'string') && message.aux.ID.startsWith('sha256:')) {
+                    result = message.aux.ID.slice(7);
+                  }
+
+                  // Status messages are ignored
+                  if (message && message.stream) {
+                    const payload = Object.assign({}, msg.payload);
+                    payload.image = result && result.substring(0, 12);
+                    payload.stream = message.stream;
+                    payload.workspace = undefined;
+                    payload.time = newTime;
+
+                    node.send([null, {
+                      _msgid: msg._msgid,
+                      payload: payload
+                    }]);
+                  }
+                }
+              });
             } catch (error) {
               node.error(error);
               node.error(chunk);
-            }
-
-            if (message && message.aux && (typeof message.aux.ID === 'string') && message.aux.ID.startsWith('sha256:')) {
-              result = message.aux.ID.slice(7);
-            }
-
-            // Status messages are ignored
-            if (message && message.stream) {
-              const payload = Object.assign({}, msg.payload);
-              payload.image = result && result.substring(0, 12);
-              payload.stream = message.stream;
-              payload.workspace = undefined;
-              payload.time = newTime;
-
-              node.send([null, {
-                _msgid: msg._msgid,
-                payload: payload
-              }]);
             }
           }
         });
