@@ -27,6 +27,6 @@
     }
   },
   "dependencies": {
-    "@elastic/elasticsearch": "7.11.1"
+    "@elastic/elasticsearch": "*"
   }
 }
